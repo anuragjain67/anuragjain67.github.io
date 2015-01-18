@@ -1,15 +1,20 @@
 ---
 layout: default
+bottom_include: comments.html
+include_header: post_header.html
+include_comments:
+  embed: true
+  count: true
 ---
-<div class="post">
 
-  <header class="post-header">
-    <h1 class="post-title">{{ page.title }}</h1>
-    <p class="post-meta">{{ page.date | date: "%b %-d, %Y" }}{% if page.author %} • {{ page.author }}{% endif %}{% if page.meta %} • {{ page.meta }}{% endif %}</p>
-  </header>
-
-  <article class="post-content">
+<article class="post">
+  <div class="post-content">
     {{ content }}
-  </article>
+  </div>
+  <hr>
+  <div> {% include upcoming-posts.html %} </div>
+  <div class="mt4 mb4">{% include post-navigation.html %}</div>
+  <div class="mt4">{% include author-share.html %}</div>
+</article>
 
-</div>
+

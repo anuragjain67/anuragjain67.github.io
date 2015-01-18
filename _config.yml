@@ -1,14 +1,52 @@
-# Site settings
-title: Your awesome title
-email: your-email@domain.com
-description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-baseurl: "" # the subpath of your site, e.g. /blog/
-url: "http://yourdomain.com" # the base hostname & protocol for your site
-twitter_username: jekyllrb
-github_username:  jekyll
-
-# Build settings
-markdown: kramdown
+---
+title: Anuragjain67.Github.Io
+timezone: Asia/Kolkata
+collections:
+  posts:
+    title: Posts
+    output: true
+  uploads:
+    title: Uploads
+    output: true
+baseurl: "/"
+url: http://anuragjain67.github.io
+nav:
+  main:
+    blog: "https://blog.anurag.club"
+    medium: "https://jainanurag.medium.com"
+  writing:
+    all: "/writing"
+    popular: "/writing/popular"
+    tags: "/writing/tags"
+    rss: "/feed.xml"
+name: Anurag Jain
+slogan: Software Engineer by ❤️.
+description: Learn & Share
+thumbnail_path: anurag-jain.png
+website_repo_url: https://github.com/anuragjain67/anuragjain67.github.io
+contact_urls:
+  linkedin:
+    url: https://www.linkedin.com/in/anuragjain67
+    label: LinkedIn
+    icon: linkedin-square
+  blog:
+    url: https://blog.anurag.club
+    label: Blog
+    icon: pencil-square
+  medium:
+    url: https://jainanurag.medium.com
+    label: Medium
+    icon: medium
+  github:
+    url: https://github.com/anuragjain67/
+    label: GitHub
+    icon: github-square
+paginate: 10
+paginate_path: "/writing/page:num"
+permalink: "/writing/:year/:month/:day/:title"
+sass:
+  sass_dir: "/assets/css"
+  style: :compressed
+highlighter: rouge
+gems:
+- jekyll-paginate

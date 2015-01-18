@@ -1,0 +1,13 @@
+---
+title: 'Anurag Jain: Art'
+layout: default
+header_title: Art
+include_header: art_header.html
+---
+
+{% for post in site.posts %}
+  {% if post.add_to_art_list %}  
+    {% include post-outline.html post=post %}
+  {% endif %}
+{% endfor %}
+
