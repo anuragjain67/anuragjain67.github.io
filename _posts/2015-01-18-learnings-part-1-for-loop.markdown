@@ -11,13 +11,13 @@ date:   2015-01-18 12:29:13
 {% highlight python%}
 def update_objects(server_id):
     # For given server_id it will update the tag.
-    interfaces = get_all_network_interface(server_name)
+    interfaces = get_all_network_interface(server_id)
     for interface in interfaces:
         update_tag(interface, 'pro')
 
 def main():
     server_id = get_server_id(server_name="Anurag's Vostro")
-    update_objects(server_name)
+    update_objects(server_id)
 
 # Calling main function
 main()
@@ -119,13 +119,13 @@ POST /api/another/ 200.0 120.0
 {% highlight python%}
 def update_objects(server_id):
     # For given server_id it will update the tag.
-    interfaces = get_all_network_interface(server_name)
+    interfaces = get_all_network_interface(server_id)
     for interface in interfaces:
         update_tag(interface, 'pro')
 
 def main():
     server_id = get_server_id(server_name="Anurag's Vostro")
-    update_objects(server_name)
+    update_objects(server_id)
 
 # Calling main function
 main()
