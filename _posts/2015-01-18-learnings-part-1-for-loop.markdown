@@ -9,50 +9,60 @@ date:   2015-01-18 12:29:13
 *A Story of "Danger for loop".*
 
 {% highlight python%}
-def update_objects():
-    interfaces = get_all_network_interface()
+def update_objects(server_id):
+    # For given server_id it will update the tag.
+    interfaces = get_all_network_interface(server_name)
     for interface in interfaces:
         update_tag(interface, 'pro')
 
-update_objects()
+def main():
+    server_id = get_server_id(server_name="Anurag's Vostro")
+    update_objects(server_name)
+
+# Calling main function
+main()
+
 {% endhighlight %}
 
 ----
-****
 
 ## Preface
 
 **Time**: Early in the morning !
 
-**Tech Lead**: ```Hey Anurag, there is an API Outage !``` (on phone)
+**Where**: On phone !
 
-Wait Wait, Before I start the story, Lemme tell you about myself, 
+**Tech Lead**: ```Hey Anurag, there is an API Outage !```
 
-I am working on a project which does server monitoring. There are no developers working on this project who started it. It means, If you face any problem you have to become the *Sherlock Homes* until and unless Documentation helps.
+**Wait wait..., Before I start the story, Lemme tell you about myself**
+
+I am working on a project which does server monitoring. There are **no developers** working on this project **who started it**.
+
+It means, If you face any problem then, you have to become the *Sherlock Homes* until and unless documentation helps.
 
 ----
-****
 
 ## Find out the problem !
 
-What is the problem ?
+> Hey, What is the problem ?
 
-> API servers are going down in every x hours and AWS launching new server.
+>> API servers are going down in every x hours and AWS launching new server.
 
->> So, We don't know the exact reason why this is happening.
+> Do we know the exact reason why this is happening ?
 
->>> Its time to change mask and become Sherlock Homes !
+>> No !
 
+> Hmm, It means, Its time to change mask and become Sherlock Homes !
 ![ sherlock homes]({{ site.baseurl }}/img/sherlock_homes.jpg "Sherlock Homes")
 
 
-**Lets check logs**
+**Check logs**
 
-* AWS cloudwatch:  *lots of 500 errors*.
-* API Server: *worker queue got increase*.
-* nginx: Every api is giving slow response.
+* AWS cloudwatch:  *Lots of 500 errors.*
+* API Server: *Worker queue got increase.*
+* Nginx: *Every api is giving slow response.*
 
-**Every api is giving slow response, hmm...**. 
+**Hey, Every api is giving slow response [#clue]**. 
 
 From past three months everything was working fine and suddenly outage ?
 
@@ -61,26 +71,22 @@ From past three months everything was working fine and suddenly outage ?
 * Or someone hacked ? lets skip this :-D
 
 
-**Database Problem**
+**Check Database Problem**
 
 	Checked the slow query log. Some queries are very slow.
 	Also, CPU utilization is very high. Is this problem ?
 	
 	Sherlock: I don't think so, because its happening since last three months.
 
-	Reliased, this is wrong track !
 
-
-**Redis Problem**
+**Check Redis Problem**
 	
 	Everything seems fine in redis.
 
-	Reliased, this is wrong track !
 
+> Ah, again **#NoClue**, So we decided to **Switch on the RED SIGNAL (Less Traffic)**.
 
-Ah, again Clue less, So we decided to **Switch on the RED SIGNAL (Less Traffic)**.
-
-Now check logs again, have we missed anything ?
+> Now check logs again, have we missed anything ?
 
 **Checked Nginx Log:**
 
@@ -90,7 +96,7 @@ POST /api/sites/ 201.0 0.1
 POST /api/objects/ 1999.0 200.0
 {% endhighlight %}
 
-Have you noticed there are two type of response time:
+> Have you noticed there are two type of response time:
 
 * waiting time. (eg. 192.0)
 * application execution time. (eg. 0.2)
@@ -105,16 +111,22 @@ POST /api/another/ 200.0 120.0
 
 Need to Check, if there is any common code which is being used ? 
 
-Ah found, only one code is being used. which is update_objects()
-
+> Ah found, only one code is being used. which is update_objects()
 
 {% highlight python%}
-def update_objects():
-    interfaces = get_all_network_interface()
+def update_objects(server_id):
+    # For given server_id it will update the tag.
+    interfaces = get_all_network_interface(server_name)
     for interface in interfaces:
         update_tag(interface, 'pro')
 
-update_objects()
+def main():
+    server_id = get_server_id(server_name="Anurag's Vostro")
+    update_objects(server_name)
+
+# Calling main function
+main()
+
 {% endhighlight %}
 
 
@@ -143,11 +155,12 @@ Oh you mean, when you run docker and then close it creates new interface ?
 ----
 
 ----
-****
-
 
 ## Moral of Story:
 
-* When you don't know the `n` max limit, Don't use for loop. Define the max limit and then use it.
-* Don't use `network/database` calls in for loop.
+* Never use for loop, When you don't know the `n's max limit`. 
+* Always define the max limit in the for loop.
+
+* Never use `network/database` calls in for loop.
 * Always do batch processing for network/database calls.
+
