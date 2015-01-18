@@ -151,12 +151,12 @@ main()
 > Are you using docker?
 
 >> Why are you asking this question, is it related? 
-Oh you mean, when you run docker and then close it creates new interface ?
+Oh you mean, when you run docker it creates new interface ?
 
 
-> Lets check for one server.
+> Lets prove this theory for one server (Anurag's Vostro).
 
->> OMG, There are 60000 network interfaces for Anurag's Vostro server. And this server is using Docker :-D
+>> OMG ! There are 60000 network interfaces for the server. And this server is using Docker :-D
 
 
 >Oops, 60000 network calls in for loop  ? :-D
