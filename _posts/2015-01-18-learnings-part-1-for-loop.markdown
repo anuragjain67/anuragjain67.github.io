@@ -84,7 +84,7 @@ From past three months everything was working fine and suddenly outage ?
 	Everything seems fine in redis.
 
 
-> Ah, again **#NoClue**, So we decided to **Switch on the RED SIGNAL (Less Traffic)**.
+> Ah, again **#NoClue**, First **Switch on the RED SIGNAL (Less Traffic)**.
 
 > Now check logs again, have we missed anything ?
 
@@ -101,7 +101,10 @@ POST /api/objects/ 1999.0 200.0
 * waiting time. (eg. 192.0)
 * application execution time. (eg. 0.2)
 
-It means, only some apis are slow, not all.
+It means
+
+* Waiting time for all api are large.
+* and only for some api Execution time are large.
 
 {% highlight python%}
 POST /api/objects/ 1999.0 200.0
@@ -109,9 +112,9 @@ POST /api/other/ 122.0 120.0
 POST /api/another/ 200.0 120.0
 {% endhighlight %}
 
-Need to Check, if there is any common code which is being used ? 
+> Need to Check, if there is any common code which is being used ? 
 
-> Ah found, only one code is being used. which is update_objects()
+>> Ah found, only one code is being used. which is update_objects()
 
 {% highlight python%}
 def update_objects(server_id):
@@ -130,28 +133,33 @@ main()
 {% endhighlight %}
 
 
-**Whats wrong here ?**
+> Whats wrong here ?
 
-> Its updating tags for only network_interfaces.
+>> Nothing wrong. Its updating tags for only network_interfaces of one server. 
 
-> How many interfaces can be possible in one server ? 
 
->> 5/10 (maximum)
+> Wait, How many interfaces can be possible in one server ? 
+
+>> 5 to 10
+
 
 > Then it should not be the problem right ?
 
 >> Yes, it should not be.
+
 
 > Are you using docker?
 
 >> Why are you asking this question, is it related? 
 Oh you mean, when you run docker and then close it creates new interface ?
 
-> Lets check for one site.
 
->> there are 60000 network interfaces.
+> Lets check for one server.
 
->Oh, for loop for 60000 ? :-D
+>> OMG, There are 60000 network interfaces for Anurag's Vostro server. And this server is using Docker :-D
+
+
+>Oops, 60000 network calls in for loop  ? :-D
 ----
 
 ----
