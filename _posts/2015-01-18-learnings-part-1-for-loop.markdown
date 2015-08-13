@@ -172,3 +172,5 @@ Oh you mean, when you run docker it creates new interface ?
 * Never use `network/database` calls in for loop.
 * Always do batch processing for network/database calls.
 
+# Other Posts
+* [Learning Django]({% post_url 2015-08-13-learnings-django %})
