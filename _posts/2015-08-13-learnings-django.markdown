@@ -40,7 +40,7 @@ datetime.datetime(2015, 8, 14, 0, 26, 28, 415929, tzinfo=<DstTzInfo 'Asia/Kolkat
 {% endhighlight %}
 
 
-* What are the is_aware, is_naive, make_aware, make_naive ?
+* What does is_aware, is_naive, make_aware, make_naive do?
 
 {% highlight python %}
 >> from django.utils.timezone import is_aware, is_naive
@@ -147,6 +147,6 @@ WHERE
 * [Danger For loop]({% post_url 2015-01-18-learnings-part-1-for-loop %})
 
 # Coming Soon
-* Will be adding topic on Orm Optimization ?
-* Why you should leave your current company ?
-* What things you should look in your future company ?
+* Query Optimization with ORM.
+* Why you should leave current company ?
+* What are the things you should look in your future company ?
