@@ -2,6 +2,7 @@
 layout: post
 title:  Quick Setup Steps New Ubuntu Laptop
 date:   2014-09-09 14:00:00
+comments: true
 ---
 
 ### Necessary Packages:

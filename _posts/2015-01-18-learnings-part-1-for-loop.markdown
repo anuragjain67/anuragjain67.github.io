@@ -2,6 +2,7 @@
 layout: post
 title:  "Danger For loop"
 date:   2015-01-18 12:29:13
+comments: true
 ---
 
 ## Trailer

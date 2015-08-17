@@ -2,6 +2,7 @@
 layout: post
 title:  Great Minds Think Alike ?
 date:   2015-03-18 10:00:00
+comments: true
 ---
 
 I really **don't like** the quote. If you believe so, argue with me on following questions:

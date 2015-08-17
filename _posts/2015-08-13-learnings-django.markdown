@@ -2,6 +2,7 @@
 layout: post
 title:  "Learnings Django"
 date:   2015-08-13 23:30:00
+comments: true
 ---
 
 ### Timezone
