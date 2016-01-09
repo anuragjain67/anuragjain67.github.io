@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Kah na paya"
-date:   2015-08-18 21:00:00
-comments: true
+title: "Kah na paya"
+date: 2015-08-18 21:00:00
+add_to_art_list: true
+thumbnail_path: post_thumbnails/sayit.jpg
+excerpt: "Don't hesitate, sayit. Its not wrong."
 ---
 
 ## Preface

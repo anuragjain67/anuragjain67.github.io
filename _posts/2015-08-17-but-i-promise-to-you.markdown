@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "But I Promise to You"
-date:   2015-08-17 21:00:00
-comments: true
+title: "But I Promise to You"
+date: 2015-08-17 21:00:00
+add_to_art_list: true
+excerpt: But I promise to you, In every instant of my life, I will love you.
+thumbnail_path: post_thumbnails/promise.png
 ---
 
 ## Preface

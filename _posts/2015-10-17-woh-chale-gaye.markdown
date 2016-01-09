@@ -1,8 +1,10 @@
 ---
 layout: post
-title:  "Woh Chale Gaye"
-date:   2015-10-17 08:00:00
-comments: true
+title: "Woh Chale Gaye"
+date: 2015-10-17 08:00:00
+add_to_art_list: true
+thumbnail_path: post_thumbnails/gone.jpg
+excerpt: "Jisko jana tha woh chale gaye, Laut kar phir na aayenge woh."
 ---
 
 ## Woh chale gaye ...
