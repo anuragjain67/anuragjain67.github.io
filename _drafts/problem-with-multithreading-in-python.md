@@ -31,11 +31,12 @@ I believe after answering following points, we must reach to goal.
 	* Multithreading model.
 	* What is thread safe ?
 4. Multicore, Multitasking ?
-5. Global Interpreter lock.
+5. Global Interpreter lock in python.
 
-	* Definition ?
-	* Why it is required ?
+	* what is GIL ?
+	* Why python uses GIL ?
 	* What is the problem if it exists ?
+	* Solutions to overcome the problem ?
 6. Multithreading in python.
 
 	* How to do ?
@@ -197,6 +198,44 @@ number of CPUs present and other factors.
 
 ## Global Interpreter Lock
 
+### What is GIL ?
+
+Wiki Definition: Global interpreter lock (GIL) is a mechanism used in computer language interpreters to synchronize the execution of threads so that only one native thread can execute at a time.
+
+### Why python uses GIL ?
+
+In CPython, the global interpreter lock, or GIL, is a mutex that prevents multiple native threads from executing Python bytecodes at once. This lock is necessary mainly because CPython's memory management is not thread-safe.
+
+**Benefits of the GIL**
+
+* Increased speed of single-threaded programs.
+* Easy integration of C libraries that usually are not thread-safe.
+* It is faster in the single-threaded case.
+* It is faster in the multi-threaded case for i/o bound programs.
+* It is faster in the multi-threaded case for cpu-bound programs that do their compute-intensive work in C libraries.
+* It makes C extensions easier to write: there will be no switch of Python threads except where you allow it to happen (i.e. between the Py_BEGIN_ALLOW_THREADS and Py_END_ALLOW_THREADS macros).
+* It makes wrapping C libraries easier. You don't have to worry about thread-safety. If the library is not thread-safe, you simply keep the GIL locked while you call it.
+
+### What is the problem if it exists ?
+
+The GIL is controversial because it prevents multithreaded CPython programs from taking full advantage of multiprocessor systems in certain situations. Note that potentially blocking or long-running operations, such as I/O, image processing, and NumPy number crunching, happen outside the GIL. Therefore it is only in multithreaded programs that spend a lot of time inside the GIL, interpreting CPython bytecode, that the GIL becomes a bottleneck.
+
+### Solutions to overcome the problem ?
+
+* Applications written in programming languages with a GIL can be designed to use separate processes to achieve full parallelism, as each process has its own interpreter and in turn has its own GIL.
+
+* The GIL can be released by C extensions. Python's standard library releases the GIL around each blocking i/o call. Thus the GIL has no consequence for performance of i/o bound servers. You can thus create networking servers in Python using processes (fork), threads or asynchronous i/o, and the GIL will not get in your way.
+
+* There are several implementations of Python, for example, CPython, IronPython, RPython, etc.Some of them have a GIL, some don't. For example, CPython has the GIL.
+
+* Numerical libraries in C or Fortran can similarly be called with the GIL released. While your C extension is waiting for an FFT to complete, the interpreter will be executing other Python threads. A GIL is thus easier and faster than fine-grained locking in this case as well. This constitutes the bulk of numerical work. The NumPy extension releases the GIL whenever possible.
+
+* Threads are usually a bad way to write most server programs. If the load is low, forking is easier. If the load is high, asynchronous i/o and event-driven programming (e.g. using Python's Twisted framework) is better. The only excuse for using threads is the lack of os.fork on Windows.
+
+* The GIL is a problem if, and only if, you are doing CPU-intensive work in pure Python. Here you can get cleaner design using processes and message-passing (e.g. mpi4py). There is also a 'processing' module in Python cheese shop, that gives processes the same interface as threads (i.e. replace threading.Thread with processing.Process).
+
+* Threads can be used to maintain responsiveness of a GUI regardless of the GIL. If the GIL impairs your performance (cf. the discussion above), you can let your thread spawn a process and wait for it to finish.
+
 ---------------------
 
 ## References
@@ -204,3 +243,4 @@ number of CPUs present and other factors.
 2. [http://www.tutorialspoint.com/operating_system/os_multi_threading.htm](http://www.tutorialspoint.com/operating_system/os_multi_threading.htm)
 3. [http://www.ni.com/white-paper/6424/en/](http://www.ni.com/white-paper/6424/en/)
 4. [http://stackoverflow.com/a/1050257/2000121](http://stackoverflow.com/a/1050257/2000121)
+5. [http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil](http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil)
