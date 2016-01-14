@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Problem with multithreading in python ?
-categories: []
 tags:
 - python-thread
 - GIL
@@ -10,6 +9,8 @@ tags:
 - os
 published: True
 excerpt: "To understand this we first need to learn multithreading, multiprocessing, concurrency, parallelism etc."
+date: 2016-01-15 01:08:50
+thumbnail_path: post_thumbnails/confusing.jpg
 ---
 
 ## GOAL
