@@ -14,42 +14,34 @@ excerpt: "To understand this we first need to learn multithreading, multiprocess
 
 ## GOAL
 
-What is the problem with multithreading in python ? 
+"**Understand the problem with multithreading in python.**"
 
-I believe after answering following points, we must reach to goal.
+I believe after answering following points, we should understand.
 
-1. Concurrency VS Parallelism ?
-2. What is Process ?
+* [Concurrency VS Parallelism ?](#concurrency-vs-parallelism)
+* [What is Process ?](#what-is-process-)
 
-    * Process definition and Example ?
-    * Context Switching ?
-3. What is Thread ?
+    * [Process definition and Example ?](#what-is-process-)
+    * [What is Context Switching ?](#what-is-context-switching-)
+* [What is Thread ?](#what-is-thread-)
 
-	* Thread definition
-	* Why thread ?
-	* Advantages.
-	* Multithreading model.
-	* What is thread safe ?
-4. Multicore, Multitasking ?
-5. Global Interpreter lock in python.
+	* [Thread definition.](#what-is-thread-)
+	* [Why thread ?](#why-thread-)
+	* [Multithreading model.](#multithreading-model)
+* [Multicore, Multitasking.](#multicore-multitasking)
+* [Global Interpreter Lock (GIL) in python.](#global-interpreter-lock)
 
-	* what is GIL ?
-	* Why python uses GIL ?
-	* What is the problem if it exists ?
-	* Solutions to overcome the problem ?
-6. Multithreading in python.
-
-	* How to do ?
-	* What is the problem with multithreading in python ?
-	* When should we use thread in python ?
-	* How to stop / kill a thread in python ? Why CTRL+c doesn't work ?
-7. Multiprocessing in python.
+	* [What is GIL ?](#what-is-gil-)
+	* [Why python uses GIL ?](#why-python-uses-gil-)
+	* [What is the problem if it exists ?](#what-is-the-problem-if-it-exists-)
+	* [Solutions to overcome the problem ?](#solutions-to-overcome-the-problem-)
 
 So, Lets answer !
 
 >
-* After Google searching I haven't found a single place where I can learn all of them together. This blog is just a collection of contents which I found on INTERNET.
-* I wont go into full details of process, thread, core etc. for example explaining process control block (PCB).
+* After Google searching I haven't found a single place where I can learn all of them together.So, This blog is collection of all information together so it will be easier to understand the concept.
+* This is really long post. Read with patience.
+* In this post, I wont go into full details of process, thread, core etc. for example explaining process control block (PCB).
 * I am placing some story to build better understanding, story may not be real.
 
 ---------------------
@@ -62,7 +54,7 @@ So, Lets answer !
 
 ---------------------
 
-## What is Process.
+## What is Process ?
 
 A process is a program in execution. 
 
@@ -70,7 +62,7 @@ Example: when you run a python program its a process.
 
 ```Single CPU can only run one process at a time.```
 
-> Story: When computer was invented, they must have started with single process. It means, if person is working on calculator and want to work on Word Doc then he has to kill Calculator process first. (Obvious Reason: CPU can only run one process at a time.) To address the problem they must have invented context switching.
+> Story: When computer was invented, they must have started with single process. It means, if person is working on XL Sheet and want to work on Word Doc then he has to kill XL Sheet process. (Obvious Reason: CPU can only run one process at a time.) To address the problem they must have invented context switching.
 
 ### What is Context Switching ? 
 
@@ -90,66 +82,65 @@ So following thing happens when context got switch.
 
 There are lot of definitions I have found over the INTERNET.
 
-* A thread is a basic unit of CPU utilization, consisting of a program counter, a stack, and a set of registers, ( and a thread ID. )
-* A thread is a light weight process. 
-* Each thread belongs to exactly one process and no thread can exist outside a process. 
-* Traditional ( heavyweight ) processes have a single thread of control - There is one program counter, and one sequence of instructions that can be carried out at any given time.
+* A thread is a light weight process.
+* Each thread belongs to exactly one process and no thread can exist outside a process.
 * As shown in Figure 1 multi-threaded applications have multiple threads within a single process, each having their own program counter, stack and set of registers, but sharing common code, data, and certain structures such as open files.
 
 {% include figure.html path="posts/process_threads.jpg" caption="Figure 1 - Single Process Multithreading" %}
 
 ### Why Thread ?
 
-* Threads are very useful in modern programming whenever a process has multiple tasks to perform independently of the others.
-
-	> For example in a word processor, a background thread may check spelling and grammar while a foreground thread processes user input ( keystrokes ), while yet a third thread loads images from the hard drive, and a fourth does periodic automatic backups of the file being edited.
-
 * Threads provide a way to improve application performance through parallelism and/or concurrency.
+	* A single threaded process can only run on one CPU, no matter how many cores/processors are available, whereas the execution of a multi-threaded application may be split amongst available processors/cores.
+	* We can run one thread which can provide rapid response to user. And in background one thread is doing extensive CPU work.
 
-### Advantages
+* By default threads share common code, data, and other resources: 
 
-* Responsiveness - One thread may provide rapid response while other threads are blocked or slowed down doing intensive calculations.
-* Resource sharing - By default threads share common code, data, and other resources, which allows multiple tasks to be performed simultaneously in a single address space.
-* Economy - Creating and managing threads ( and context switches between them ) is much faster than performing the same tasks for processes.
-* Scalability, i.e. Utilization of multiprocessor architectures - A single threaded process can only run on one CPU, no matter how many may be available, whereas the execution of a multi-threaded application may be split amongst available processors. ( Note that single threaded processes can still benefit from multi-processor architectures when there are multiple processes contending for the CPU, i.e. when the load average is above some certain threshold. )
+	* Which allows multiple tasks to be performed simultaneously in a single address space.
+
+		> For example in a word processor, a background thread may check spelling and grammar while a foreground thread processes user input ( keystrokes ), while yet a third thread loads images from the hard drive, and a fourth does periodic automatic backups of the file being edited.
+	* Creating, Managing, Context switches is much faster than performing the same tasks for processes.
 
 
 ### Multithreading Model
 
-* There are two types of thread: User Level Thread, Kernel Level Thread.
-* User level thread: Application manages thread, i.e. creating/destroying thread, saving/restoring thread, scheduling thread, passing message/data to thread. Kernel is not aware of the existence of threads.
-* Kernel level thread: Thread management done by Kernel i.e. maintain context information for a process or threads within process. Scheduling by Kernel is done on a thread basis. Kernel perform thread creation, scheduling and management in Kernel space.
-* Advantages of User level thread:
+There are two types of thread:
 
-	* User level thread can run on any operating system.
-	* Thread switching does not require Kernel mode privileges.
-	* Scheduling can be application specific in the user level thread.
-	* User level threads are fast to create and manage.
+* **User level thread:** Application manages thread, i.e. creating/destroying thread, saving/restoring thread, scheduling thread, passing message/data to thread. Kernel is not aware of the existence of threads.
 
-* Disadvantages of User level thread:
+	* Advantages:
 
-	* When context switch happens it block process, as process is maintaining threads so threads also block.
-	* Multithreaded application cannot take advantage of multiprocessing
+		* User level thread can run on any operating system.
+		* Thread switching does not require Kernel mode privileges.
+		* Scheduling can be application specific in the user level thread.
+		* User level threads are fast to create and manage.
 
-* Advantages of Kernel level thread:
-	* Kernel can simultaneously schedule multiple threads from the same process on multiple processes.
-	* If one thread in a process is blocked, the Kernel can schedule another thread of the same process.
-	* Kernel routines themselves can multithreaded.
+	* Disadvantages:
 
-* Disadvantages of Kernel level thread:
+		* When context switch happens it block process, as process is maintaining threads so threads also block.
+		* Multithreaded application cannot take advantage of multiprocessing
 
-	* Kernel threads are generally slower to create and manage than the user threads.
-	* Transfer of control from one thread to another within same process requires a mode switch to the Kernel.
+* **Kernel level thread:** Thread management done by Kernel i.e. maintain context information for a process or threads within process. Scheduling by Kernel is done on a thread basis. Kernel perform thread creation, scheduling and management in Kernel space.
+
+	* Advantages:
+
+		* Kernel can simultaneously schedule multiple threads from the same process on multiple processes.
+		* If one thread in a process is blocked, the Kernel can schedule another thread of the same process.
+		* Kernel routines themselves can multithreaded.
+
+	* Disadvantages:
+
+		* Kernel threads are generally slower to create and manage than the user threads.
+		* Transfer of control from one thread to another within same process requires a mode switch to the Kernel.
 
 In a specific implementation, the user threads must be mapped to kernel threads, using one of the following strategies.
 
 #### Many-To-One Model
 
 * In the many-to-one model, many user-level threads are all mapped onto a single kernel thread.
-Thread management is handled by the thread library in user space, which is very efficient.
+* Thread management is handled by the thread library in user space, which is very efficient.
 * However, if a blocking system call is made, then the entire process blocks, even if the other user threads would otherwise be able to continue.
 * Because a single kernel thread can operate only on a single CPU, the many-to-one model does not allow individual processes to be split across multiple CPUs.
-* Green threads for Solaris and GNU Portable Threads implement the many-to-one model in the past, but few systems continue to do so today.
 
 {% include figure.html path="posts/threads_manytoone.jpg" caption="Figure 2 - Many to one" %}
 
@@ -158,8 +149,6 @@ Thread management is handled by the thread library in user space, which is very 
 * The one-to-one model creates a separate kernel thread to handle each user thread.
 * One-to-one model overcomes the problems listed above involving blocking system calls and the splitting of processes across multiple CPUs.
 * However the overhead of managing the one-to-one model is more significant, involving more overhead and slowing down the system.
-* Most implementations of this model place a limit on how many threads can be created.
-* Linux and Windows from 95 to XP implement the one-to-one model for threads.
 
 {% include figure.html path="posts/threads_onetoone.jpg" caption="Figure 3 - One to one" %}
 
@@ -176,12 +165,11 @@ number of CPUs present and other factors.
 
 ---------------------
 
-
 ## Multicore, Multitasking
 
 ### Multicore
 
-* A multicore system is a single-processor CPU that contains two or more cores, with each core housing independent microprocessors.
+* A multicore system is a single-processor CPU that contains two or more cores, with each core containing independent microprocessors.
 * A multicore microprocessor performs multiprocessing in a single physical package.
 * Multicore systems share computing resources that are often duplicated in multiprocessor systems, such as the L2 cache and front-side bus.
 * Multicore systems provide performance that is similar to multiprocessor systems but often at a significantly lower cost because a motherboard with support for multiple processors, such as multiple processor sockets, is not required.
@@ -206,61 +194,63 @@ Wiki Definition: Global interpreter lock (GIL) is a mechanism used in computer l
 
 In CPython, the global interpreter lock, or GIL, is a mutex that prevents multiple native threads from executing Python bytecodes at once. This lock is necessary mainly because CPython's memory management is not thread-safe.
 
+>
+**Thread safety**: A piece of code is thread-safe if it functions correctly during simultaneous execution by multiple threads.
+
+
 **Benefits of the GIL**
 
-* Increased speed of single-threaded programs.
 * Easy integration of C libraries that usually are not thread-safe.
 * It is faster in the single-threaded case.
 * It is faster in the multi-threaded case for i/o bound programs.
 * It is faster in the multi-threaded case for cpu-bound programs that do their compute-intensive work in C libraries.
-* It makes C extensions easier to write: there will be no switch of Python threads except where you allow it to happen (i.e. between the Py_BEGIN_ALLOW_THREADS and Py_END_ALLOW_THREADS macros).
-* It makes wrapping C libraries easier. You don't have to worry about thread-safety. If the library is not thread-safe, you simply keep the GIL locked while you call it.
 
 ### What is the problem if it exists ?
 
-The GIL is controversial because it prevents multithreaded CPython programs from taking full advantage of multiprocessor systems in certain situations. Note that potentially blocking or long-running operations, such as I/O, image processing, and NumPy number crunching, happen outside the GIL. Therefore it is only in multithreaded programs that spend a lot of time inside the GIL, interpreting CPython bytecode, that the GIL becomes a bottleneck.
+The GIL does not prevent threading. All the GIL does is make sure only one thread is executing Python code at a time; control still switches between threads. Hence, It prevents multithreaded CPython programs from taking full advantage of multiprocessor systems in certain situations.
+
+Note that potentially blocking or long-running operations, such as I/O, image processing, and NumPy number crunching, happen outside the GIL. Therefore it is only in multithreaded programs that spend a lot of time inside the GIL, interpreting CPython bytecode, that the GIL becomes a bottleneck.
 
 ### Solutions to overcome the problem ?
 
-* Applications written in programming languages with a GIL can be designed to use separate processes to achieve full parallelism, as each process has its own interpreter and in turn has its own GIL.
-
-* The GIL can be released by C extensions. Python's standard library releases the GIL around each blocking i/o call. Thus the GIL has no consequence for performance of i/o bound servers. You can thus create networking servers in Python using processes (fork), threads or asynchronous i/o, and the GIL will not get in your way.
-
+* The GIL is a problem if, and only if, you are doing CPU-intensive work in pure Python.
+* What many server deployments then do, is run more than one Python process, to let the OS handle the scheduling between processes to utilize your CPU cores to the max. You can also use the multiprocessing library to handle parallel processing across multiple processes from one codebase and parent process, if that suits your use cases.
+* The GIL can be released by C extensions. 
+* Python's standard library releases the GIL around each blocking i/o call. Thus the GIL has no consequence for performance of i/o bound servers. You can thus create networking servers in Python using processes (fork), threads or asynchronous i/o, and the GIL will not get in your way.
 * There are several implementations of Python, for example, CPython, IronPython, RPython, etc.Some of them have a GIL, some don't. For example, CPython has the GIL.
+* Python threading is great for creating a responsive GUI, or for handling multiple short web requests where I/O is the bottleneck more than the Python code. It is not suitable for parallelizing computationally intensive Python code, stick to the multiprocessing module for such tasks.
 
-* Numerical libraries in C or Fortran can similarly be called with the GIL released. While your C extension is waiting for an FFT to complete, the interpreter will be executing other Python threads. A GIL is thus easier and faster than fine-grained locking in this case as well. This constitutes the bulk of numerical work. The NumPy extension releases the GIL whenever possible.
-
-* Threads are usually a bad way to write most server programs. If the load is low, forking is easier. If the load is high, asynchronous i/o and event-driven programming (e.g. using Python's Twisted framework) is better. The only excuse for using threads is the lack of os.fork on Windows.
-
-* The GIL is a problem if, and only if, you are doing CPU-intensive work in pure Python. Here you can get cleaner design using processes and message-passing (e.g. mpi4py). There is also a 'processing' module in Python cheese shop, that gives processes the same interface as threads (i.e. replace threading.Thread with processing.Process).
-
-* Threads can be used to maintain responsiveness of a GUI regardless of the GIL. If the GIL impairs your performance (cf. the discussion above), you can let your thread spawn a process and wait for it to finish.
-
-
-
-### Some more knowledge
-
-The GIL does not prevent threading. All the GIL does is make sure only one thread is executing Python code at a time; control still switches between threads.
-
-What the GIL prevents then, is making use of more than one CPU core or separate CPUs to run threads in parallel.
-
-This only applies to Python code. C extensions can and do release the GIL to allow multiple threads of C code and one Python thread to run across multiple cores. This extends to I/O controlled by the kernel, such as select() calls for socket reads and writes, making Python handle network events reasonably efficiently in a multi-threaded multi-core setup.
-
-What many server deployments then do, is run more than one Python process, to let the OS handle the scheduling between processes to utilize your CPU cores to the max. You can also use the multiprocessing library to handle parallel processing across multiple processes from one codebase and parent process, if that suits your use cases.
-
-Note that the GIL only is only applicable to the CPython implementation; Jython and IronPython use a different threading implementation (the native Java VM and .NET common runtime threads respectively).
-
-Any task that tries to get a speed boost from parallel execution, using pure Python code, will not see a speed-up as threaded Python code is locked to one thread executing at a time. If you mix in C extensions and I/O, however (such as PIL or numpy operations) and any C code can run in parallel with one active Python thread.
-
-Python threading is great for creating a responsive GUI, or for handling multiple short web requests where I/O is the bottleneck more than the Python code. It is not suitable for parallelizing computationally intensive Python code, stick to the multiprocessing module for such tasks.
+> Threads are usually a bad way to write most server programs. If the load is low, forking is easier. If the load is high, asynchronous i/o and event-driven programming (e.g. using Python's Twisted framework) is better. The only excuse for using threads is the lack of os.fork on Windows.
 
 
 ---------------------
 
-## References
-1. [https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html](https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html)
-2. [http://www.tutorialspoint.com/operating_system/os_multi_threading.htm](http://www.tutorialspoint.com/operating_system/os_multi_threading.htm)
-3. [http://www.ni.com/white-paper/6424/en/](http://www.ni.com/white-paper/6424/en/)
-4. [http://stackoverflow.com/a/1050257/2000121](http://stackoverflow.com/a/1050257/2000121)
-5. [http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil](http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil)
-6. [http://stackoverflow.com/a/20939442/2000121](http://stackoverflow.com/a/20939442/2000121)
+
+## Sources
+**Concurrency and Parallelism**
+
+1. [http://stackoverflow.com/a/1050257/2000121][1]
+
+**Thread, Process, Multicore, Multitask etc.**
+
+1. [https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html][2]
+2. [http://www.tutorialspoint.com/operating_system/os_multi_threading.htm][3]
+3. [http://www.ni.com/white-paper/6424/en/][4]
+4. [https://en.wikipedia.org/](https://en.wikipedia.org/)
+5. [http://learn-gevent-socketio.readthedocs.org/en/latest/general_concepts.html][7]
+6. [Thread Safe][8]
+
+**Global Interpreter Lock**
+
+1. [http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil][5]
+2. [http://stackoverflow.com/a/20939442/2000121][6]
+
+
+[1]: http://stackoverflow.com/a/1050257/2000121
+[2]: https://www.cs.uic.edu/~jbell/CourseNotes/OperatingSystems/4_Threads.html
+[3]: http://www.tutorialspoint.com/operating_system/os_multi_threading.htm
+[4]: http://www.ni.com/white-paper/6424/en/
+[5]: http://programmers.stackexchange.com/questions/186889/why-was-python-written-with-the-gil
+[6]: http://stackoverflow.com/a/20939442/2000121
+[7]: http://learn-gevent-socketio.readthedocs.org/en/latest/general_concepts.html
+[8]: https://blogs.msdn.microsoft.com/ericlippert/2009/10/19/what-is-this-thing-you-call-thread-safe/
