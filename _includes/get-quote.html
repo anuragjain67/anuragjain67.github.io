@@ -1,2 +1,2 @@
-{% assign random = site.time | date: "%s%N" | modulo: site.data.inspirational-quotes.size  %}
+{% assign random = page.title.size | modulo: site.data.inspirational-quotes.size  %}
 &ldquo;{{ site.data.inspirational-quotes[random].quote }}&rdquo; <cite>{{ site.data.inspirational-quotes[random].person }}</cite>
