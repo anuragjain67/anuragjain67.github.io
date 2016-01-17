@@ -1,4 +1,12 @@
+- title: "Python classes: meta class, static method, classmethod, instancemethod."
+  number: 1
+- title: "Python decorators."
+  number: 2
+- title: "Git branching model."
+  number: 3
 - title: "Query Optimization with ORM."
+  number: 4
 - title: "Why you should leave current company ?"
+  number: 5
 - title: "What are the things you should look in your next job switch ?"
-
+  number: 6
