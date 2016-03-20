@@ -3,6 +3,7 @@ Blog, Learnings, Poem etc.
 
 # Quick start
 (If you want this theme)
+
 1. Use Git to clone this repo
 2. Make sure you have [Jekyll](http://jekyllrb.com/docs/installation/) installed
 3. Just the first time: `bundle install`
