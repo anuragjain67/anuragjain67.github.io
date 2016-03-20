@@ -3,6 +3,7 @@ layout: post
 title: Understanding git branching model in brief.
 tags:
  - git
+ - challenge-120
 published: True
 add_to_popular_list: true
 excerpt: This blog is just having brief notes of my understanding from various sources
