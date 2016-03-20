@@ -56,6 +56,5 @@ permalink: "/writing/:year/:month/:day/:title"
 sass:
   sass_dir: "/assets/css"
   style: :compressed  
-highlighter: pygments
 timezone: 'Asia/Kolkata'
 
