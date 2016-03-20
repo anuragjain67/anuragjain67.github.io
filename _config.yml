@@ -55,6 +55,7 @@ paginate_path: "/writing/page:num"
 permalink: "/writing/:year/:month/:day/:title"
 sass:
   sass_dir: "/assets/css"
-  style: :compressed  
+  style: :compressed
+highlighter: rouge
 timezone: 'Asia/Kolkata'
 
