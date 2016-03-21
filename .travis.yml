@@ -1,5 +1,5 @@
 language: ruby
-ruby: 
-- "2.0"
+rvm:
+  - 2.0.0-p247
 script: "bundle exec jekyll build"
 
