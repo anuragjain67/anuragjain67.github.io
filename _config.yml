@@ -59,3 +59,5 @@ sass:
 highlighter: rouge
 timezone: 'Asia/Kolkata'
 
+gems:
+    - jekyll-paginate
