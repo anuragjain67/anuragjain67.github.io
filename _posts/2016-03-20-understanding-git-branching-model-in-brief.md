@@ -1,14 +1,14 @@
 ---
-layout: post
 title: Understanding git branching model in brief.
+layout: post
 tags:
- - git
- - challenge-120
-published: True
+- git
+- challenge-120
+published: true
 add_to_popular_list: true
 excerpt: This blog is just having brief notes of my understanding from various sources
 thumbnail_path: post_thumbnails/gitlogo.jpg
-date: 2016-03-20 17:55:22
+date: '2016-03-20 23:25:22 +0530'
 ---
 
 #### Disclaimer
@@ -51,34 +51,36 @@ I am assuming **You follow Agile Process**. So lets just start the sprint.
 
 All developer should create tasks branch from develop branch
 
-{% highlight python %}
+```
 git checkout develop
 git pull origin develop
 git checkout -b task_{task_number}
-{% endhighlight %}
+```
 
 Once task completed give pull request, do changes after code review.
 
 Rebase work with develop. The reason for this is that by rebasing, your commits will always be on top of the upstream’s work, not mixed in with the changes in the upstream. This way your branch will contain only commits related to its task, which makes squashing easier. As well as there will be no merge conflicts so it will be easier to merge.
-{% highlight python %}
+
+```
 git fetch develop
 git rebase develop.
-{% endhighlight %}
+```
 
 Squash your changes to meaningful commits.
-{% highlight python %}
+
+```
 git rebase -i HEAD~{number_of_commits} 
 # This command will open interactive console
 # Where you just need to write pick
 # or squash just before commit id.
-{% endhighlight %}
+```
 
 Push your changes with force and merge the pull request. 
-{% highlight python %}
+```
 git push origin task_{task_number} -f
 # Force because you want to rewrite history
 # of changes to remote as well.
-{% endhighlight %}
+```
 
 Once sprint is over create release branch from develop and deploy release branch to staging server. QA will test it out and report bugs. Fix them and merge back to release branch. If the fix requires in develop branch immediately then just merge changes in develop branch.
 
@@ -91,10 +93,11 @@ b) If release branch exists then merge the branch in release. If developer needs
 c) If release branch doesn't exists then merge the branch in develop.
 
 After QA of release branch, We need to merge release branch in master and develop branch. Always add tag when you are merging release branch in the master.
-{% highlight python %}
+
+```
 git tag -a 'v1.1.1'
 git push --tags.
-{% endhighlight %}
+```
 
 ---
 

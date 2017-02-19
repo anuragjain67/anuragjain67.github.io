@@ -1,19 +1,14 @@
 ---
+title: Kah na paya
 layout: post
-title: "Kah na paya"
-date: 2015-08-18 21:00:00
+date: '2015-08-19 02:30:00 +0530'
 add_to_art_list: true
 thumbnail_path: post_thumbnails/sayit.jpg
-excerpt: "Don't hesitate, sayit. Its not wrong."
+excerpt: Don't hesitate, sayit. Its not wrong.
 ---
 
-## Preface
-Yes, It was true !
 
-
-## Kah na paya ...
-
-{% highlight yaml %}
+```
 
 Dil me rakhkar ek khwab, rahunga tere saath, Bachpan guzar diya !
 Karta raha tujhse pyar, Par Kah na paya, Kah na paya.
@@ -30,4 +25,4 @@ Teri Jhalak, Teri Muskan, Itna pyara.
 Jisne tujhe banaya, choom lo mein uska hath.
 Karta hun itna pyar, Par Kah na paya, Kah na paya.
 
-{% endhighlight %}
+```

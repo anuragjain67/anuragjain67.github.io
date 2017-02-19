@@ -1,31 +1,17 @@
 ---
+title: A Story of Danger forloop
 layout: post
-title: "A Story of Danger forloop"
-date: 2015-01-18 12:29:13
+date: '2015-01-18 17:59:13 +0530'
 add_to_popular_list: true
 thumbnail_path: post_thumbnails/sherlock_homes.jpg
 excerpt: how dangerous it can be ...
 tags:
- - tech
+- tech
 ---
 
 ## Trailer
 
-{% highlight python%}
-def update_objects(server_id):
-    # For given server_id it will update the tag.
-    interfaces = get_all_network_interface(server_id)
-    for interface in interfaces:
-        update_tag(interface, 'pro')
-
-def main():
-    server_id = get_server_id(server_name="Anurag's Vostro")
-    update_objects(server_id)
-
-# Calling main function
-main()
-
-{% endhighlight %}
+<script src="https://gist.github.com/anuragjain67/83a6abbcea34752590f179d4111f7dc9.js"></script>
 
 ----
 
@@ -93,11 +79,11 @@ From past three months everything was working fine and suddenly outage ?
 
 **Checked Nginx Log:**
 
-{% highlight python%}
+```
 POST /api/users/ 192.0 0.2
 POST /api/sites/ 201.0 0.1
 POST /api/objects/ 1999.0 200.0
-{% endhighlight %}
+```
 
 > Have you noticed there are two type of response time:
 
@@ -109,32 +95,17 @@ It means
 * Waiting time for all api are large.
 * and only for some api Execution time are large.
 
-{% highlight python%}
+```
 POST /api/objects/ 1999.0 200.0
 POST /api/other/ 122.0 120.0
 POST /api/another/ 200.0 120.0
-{% endhighlight %}
+```
 
 > Need to Check, if there is any common code which is being used ? 
 
 >> Ah found, only one code is being used. which is update_objects()
 
-{% highlight python%}
-def update_objects(server_id):
-    # For given server_id it will update the tag.
-    interfaces = get_all_network_interface(server_id)
-    for interface in interfaces:
-        update_tag(interface, 'pro')
-
-def main():
-    server_id = get_server_id(server_name="Anurag's Vostro")
-    update_objects(server_id)
-
-# Calling main function
-main()
-
-{% endhighlight %}
-
+<script src="https://gist.github.com/anuragjain67/83a6abbcea34752590f179d4111f7dc9.js"></script>
 
 > Whats wrong here ?
 

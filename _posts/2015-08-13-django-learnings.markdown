@@ -1,152 +1,63 @@
 ---
+title: Django Learnings
 layout: post
-title:  "Django Learnings"
-date:   2015-08-13 23:30:00
+date: '2015-08-14 05:00:00 +0530'
 thumbnail_path: post_thumbnails/django.jpg
 add_to_popular_list: true
 tags:
- - django
- - timezone
- - tech
- - prefetch
+- django
+- timezone
+- tech
+- prefetch
 excerpt: About timezone, prefetch related and some dos and don'ts.
 ---
 
 ### Timezone
 
-* Always enable timezone.
+#### Always enable timezone.
 
-{% highlight python %}
+```
 TIME_ZONE = 'Asia/Kolkata'
 USE_TZ = True
-# If you are using MySQL,
-# [see the Time zone](https://docs.djangoproject.com/en/1.8/ref/databases/#mysql-time-zone-definitions) definitions section of the MySQL notes for instructions on loading time zone definitions.
-{% endhighlight %}
+```
+
+If you are using MySQL, [see the Time zone](https://docs.djangoproject.com/en/1.8/ref/databases/#mysql-time-zone-definitions) definitions section of the MySQL notes for instructions on loading time zone definitions.
 
 
-* How to get current utc time ?
+#### How to get current utc time ?
 
-{% highlight python %}
-# Always use this way because its timezone aware.
->> from django.utils import timezone
->> timezone.now()
-datetime.datetime(2015, 8, 13, 18, 39, 50, 423516, tzinfo=<UTC>)
+Always use this way because its timezone aware.
 
-# You can also do, but output wont be timezone aware, so avoid.
->> from datetime import datetime
->> datetime.utcnow()
-datetime.datetime(2015, 8, 13, 18, 41, 21, 824650)
-{% endhighlight %}
-
-* How to get localtime ?
-
-{% highlight python %}
-# Always use this way because its timezone aware.
->> from django.utils import timezone
->> timezone.localtime(timezone.now())
-datetime.datetime(2015, 8, 14, 0, 26, 28, 415929, tzinfo=<DstTzInfo 'Asia/Kolkata' IST+5:30:00 STD>)
-{% endhighlight %}
+<script src="https://gist.github.com/anuragjain67/46cbded3123502adc9f3de2676f77360.js"></script>
 
 
-* What does is_aware, is_naive, make_aware, make_naive do?
+#### How to get localtime ?
 
-{% highlight python %}
->> from django.utils.timezone import is_aware, is_naive
->> is_aware(datetime.utcnow())
-False
->> is_naive(datetime.utcnow())
-True
+<script src="https://gist.github.com/anuragjain67/ef9cff827ca46245a4f43d1963b5cfa2.js"></script>
 
-# To make it aware,
-# Note: make aware will just append the tzinfo.
-# it wont care if datetime was given in utc | Asia/Kolkata
->> from django.utils.timezone import make_aware
->> make_aware(datetime.utcnow())
-datetime.datetime(2015, 8, 13, 18, 46, 14, 559027, tzinfo=<DstTzInfo 'Asia/Kolkata' IST+5:30:00 STD>)
+#### What does is_aware, is_naive, make_aware, make_naive do?
 
-# To make it naive,
-# Note: make naive will just remove the tzinfo.
-# it wont care if datetime was given in utc | Asia/Kolkata
->> from django.utils.timezone import make_aware, make_naive
->> make_naive(make_aware(datetime.utcnow()))
-datetime.datetime(2015, 8, 13, 18, 46, 14, 559027)
+<script src="https://gist.github.com/anuragjain67/bf42bcbc3f7893fc616699b73b5e2fde.js"></script>
 
-{% endhighlight %}
-
-* More info [https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/](https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/)
-
+More info [https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/](https://docs.djangoproject.com/en/1.8/topics/i18n/timezones/)
 
 
 ### Prefetch Related
-* Prefetch related wont work if you call .values_list() in for loop.
-
-{% highlight python %}
-# Case where Prefetch Related is working fine
-destinations = Destination.objects.all().prefetch_related('devices')
-
-for destination in destinations:
-     for device in destination.devices.all():
-         print device
 
 
-# Queries Executed:
-"""
-SELECT 
-"destination"."id", "destination"."title" 
-FROM 
-"destination"
+#### Prefetch related wont work if you call .values_list() in for loop.
 
-SELECT 
-("destinationdevicemapping"."destination_id") AS "_prefetch_related_val_destination_id",
-"device"."id"
-FROM 
-"device"
-INNER JOIN
-"destinationdevicemapping" ON ("device"."id" = "destinationdevicemapping"."device_id")
-WHERE
-"destinationdevicemapping"."destination_id" IN (1, 2)
-"""
-{% endhighlight %}
 
-{% highlight python %}
-# Case where Prefetch Related is not working fine
-destinations = Destination.objects.all().prefetch_related('devices')
+Case where Prefetch Related is working fine
 
-for destination in destinations:
-     for device in destination.devices.all().values_list('id'):
-         print device
+<script src="https://gist.github.com/anuragjain67/c54c5e3682e27952e7613e000c36c101.js"></script>
 
-# Queries Executed:
-"""
-SELECT 
-"destination"."id", "destination"."title" 
-FROM 
-"destination"
 
-SELECT 
-("destinationdevicemapping"."destination_id") AS "_prefetch_related_val_destination_id",
-"device"."id"
-FROM 
-"device"
-INNER JOIN
-"destinationdevicemapping" ON ("device"."id" = "destinationdevicemapping"."device_id")
-WHERE
-"destinationdevicemapping"."destination_id" = 1
+Case where Prefetch Related is not working fine
 
-SELECT 
-("destinationdevicemapping"."destination_id") AS "_prefetch_related_val_destination_id",
-"device"."id"
-FROM 
-"device"
-INNER JOIN
-"destinationdevicemapping" ON ("device"."id" = "destinationdevicemapping"."device_id")
-WHERE
-"destinationdevicemapping"."destination_id" = 2
-"""
+<script src="https://gist.github.com/anuragjain67/6a360eb42ad19227333b9fd9d2046eb2.js"></script>
 
-{% endhighlight %}
-
-### Also
+### Other
 * **Never** define settings in [lower case](https://docs.djangoproject.com/en/dev/topics/settings/#creating-your-own-settings).
 * Always use django-debug-toolbar, it shows how many queries you are exceuting.
 

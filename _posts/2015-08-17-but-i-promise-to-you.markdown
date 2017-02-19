@@ -1,7 +1,7 @@
 ---
+title: But I Promise to You
 layout: post
-title: "But I Promise to You"
-date: 2015-08-17 21:00:00
+date: '2015-08-18 02:30:00 +0530'
 add_to_art_list: true
 excerpt: But I promise to you, In every instant of my life, I will love you.
 thumbnail_path: post_thumbnails/promise.png
@@ -12,7 +12,7 @@ I think, I was in B.Tech IT 4th semester at IIIT-Allahabad. And it was Promise D
 
 ## But I Promise to you ...
 
-{% highlight yaml %}
+```
 I can't hate you,
 Becoz you are my love
 
@@ -45,4 +45,4 @@ In every instant of my life, my heart will touch you.
  
 I cant hate you ... 
 
-{% endhighlight %}
+```
