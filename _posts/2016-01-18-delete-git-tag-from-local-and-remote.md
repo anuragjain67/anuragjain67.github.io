@@ -3,7 +3,6 @@ title: Delete git tag from local and remote
 layout: post
 tags:
 - git
-- challenge-120
 published: true
 thumbnail_path: post_thumbnails/howto.png
 excerpt: git command to delete tag from local and remote
