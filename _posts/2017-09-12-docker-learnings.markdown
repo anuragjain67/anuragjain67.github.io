@@ -9,7 +9,7 @@ tags:
 - django stack development with docker
 add_to_popular_list: true
 excerpt: Whatever I have learnt about docker.
-thumbnail_path: "/uploads/Docker.png"
+thumbnail_path: post_thumbnails/Docker.png
 layout: post
 ---
 
