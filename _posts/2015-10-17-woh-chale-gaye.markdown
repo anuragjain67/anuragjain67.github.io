@@ -1,7 +1,7 @@
 ---
 title: Woh Chale Gaye
+date: 2015-10-17 13:30:00 +05:30
 layout: post
-date: '2015-10-17 13:30:00 +0530'
 add_to_art_list: true
 thumbnail_path: post_thumbnails/gone.jpg
 excerpt: Jisko jana tha woh chale gaye, Laut kar phir na aayenge woh.

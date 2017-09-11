@@ -1,55 +1,56 @@
-# Website settings
+---
+title: Anuragjain67.Github.Io
+timezone: Asia/Kolkata
+collections:
+  posts:
+    title: Posts
+    output: true
+  uploads:
+    title: Uploads
+    output: true
 baseurl: "/"
-url: "http://anuragjain67.github.io"
-
-# Internal nav
+url: http://anuragjain67.github.io
 nav:
   main:
     writing: "/writing"
-    art: "/art" 
+    art: "/art"
   writing:
     all: "/writing"
     popular: "/writing/popular"
     tags: "/writing/tags"
     rss: "/feed.xml"
-
-# Bio settings
-name: "Anurag Jain"
-slogan: "Programmer, Music Lover, Writer, Teacher."
-description: "A blog which contains tech and non tech stuff"
-thumbnail_path: "anurag-jain.jpg"
-website_repo_url: "https://github.com/anuragjain67/anuragjain67.github.io"
-
-# URLs
-contact_urls:  
-  linkedin: 
-    url: "https://www.linkedin.com/in/anuragjain67"
-    label: "LinkedIn"
-    icon: "linkedin-square"
-  facebook: 
-    url: "https://www.facebook.com/anurag.kota"
-    label: "Facebook"
-    icon: "facebook-square"
-  google: 
-    url: "https://plus.google.com/+anurag.kota/"
-    label: "Google+"
-    icon: "google-plus-square"
-  github: 
-    url: "https://github.com/anuragjain67/"
-    label: "GitHub"
-    icon: "github-square"
+name: Anurag Jain
+slogan: Programmer, Music Lover, Writer, Teacher.
+description: A blog which contains tech and non tech stuff
+thumbnail_path: anurag-jain.jpg
+website_repo_url: https://github.com/anuragjain67/anuragjain67.github.io
+contact_urls:
+  linkedin:
+    url: https://www.linkedin.com/in/anuragjain67
+    label: LinkedIn
+    icon: linkedin-square
+  facebook:
+    url: https://www.facebook.com/anurag.kota
+    label: Facebook
+    icon: facebook-square
+  google:
+    url: https://plus.google.com/+anurag.kota/
+    label: Google+
+    icon: google-plus-square
+  github:
+    url: https://github.com/anuragjain67/
+    label: GitHub
+    icon: github-square
   twitter:
-    url: "https://twitter.com/anuragjain67"
-    label: "Twitter"
-    icon: "twitter-square"
+    url: https://twitter.com/anuragjain67
+    label: Twitter
+    icon: twitter-square
     username: "@anuragjain67"
-  email: 
-    url: "mailto:anurag.kota+blog@gmail.com"
-    label: "Email"
-    value: "anurag.kota+blog@gmail.com"
-    icon: "envelope-square"
-
-# Jekyll build settings
+  email:
+    url: mailto:anurag.kota+blog@gmail.com
+    label: Email
+    value: anurag.kota+blog@gmail.com
+    icon: envelope-square
 paginate: 10
 paginate_path: "/writing/page:num"
 permalink: "/writing/:year/:month/:day/:title"
@@ -57,7 +58,5 @@ sass:
   sass_dir: "/assets/css"
   style: :compressed
 highlighter: rouge
-timezone: 'Asia/Kolkata'
-
 gems:
-    - jekyll-paginate
+- jekyll-paginate

@@ -1,7 +1,7 @@
 ---
 title: But I Promise to You
+date: 2015-08-18 02:30:00 +05:30
 layout: post
-date: '2015-08-18 02:30:00 +0530'
 add_to_art_list: true
 excerpt: But I promise to you, In every instant of my life, I will love you.
 thumbnail_path: post_thumbnails/promise.png

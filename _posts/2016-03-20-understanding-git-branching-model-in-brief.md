@@ -1,13 +1,12 @@
 ---
 title: Understanding git branching model in brief.
-layout: post
+date: 2016-03-20 23:25:22 +05:30
 tags:
 - git
-published: true
+layout: post
 add_to_popular_list: true
 excerpt: This blog is just having brief notes of my understanding from various sources
 thumbnail_path: post_thumbnails/gitlogo.jpg
-date: '2016-03-20 23:25:22 +0530'
 ---
 
 #### Disclaimer

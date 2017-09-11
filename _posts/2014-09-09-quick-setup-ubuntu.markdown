@@ -1,14 +1,14 @@
 ---
 title: Quick Setup Steps New Ubuntu Laptop
-layout: post
-date: '2014-09-09 19:30:00 +0530'
-thumbnail_path: post_thumbnails/setup-folder-icon.png
-add_to_popular_list: true
+date: 2014-09-09 19:30:00 +05:30
 tags:
 - setup
 - installation
 - tech
 - ubuntu
+layout: post
+thumbnail_path: post_thumbnails/setup-folder-icon.png
+add_to_popular_list: true
 excerpt: Installation steps for nodejs, build essential, eclipse, java etc.
 ---
 

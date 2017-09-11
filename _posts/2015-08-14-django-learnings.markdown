@@ -1,14 +1,14 @@
 ---
 title: Django Learnings
-layout: post
-date: '2015-08-14 05:00:00 +0530'
-thumbnail_path: post_thumbnails/django.jpg
-add_to_popular_list: true
+date: 2015-08-14 05:00:00 +05:30
 tags:
 - django
 - timezone
 - tech
 - prefetch
+layout: post
+thumbnail_path: post_thumbnails/django.jpg
+add_to_popular_list: true
 excerpt: About timezone, prefetch related and some dos and don'ts.
 ---
 

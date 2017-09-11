@@ -1,11 +1,11 @@
 ---
-layout: post
 title: Great Minds Think Alike ?
-date: 2015-03-18 10:00:00
+date: 2015-03-18 15:30:00 +05:30
+tags:
+- philosophy
+layout: post
 thumbnail_path: post_thumbnails/really.png
 excerpt: I really don't like the quote...
-tags:
- - philosophy
 ---
 
 I really **don't like** the quote. If you believe so, argue with me on following questions:

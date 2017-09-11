@@ -1,12 +1,11 @@
 ---
 title: Kah na paya
+date: 2015-08-19 02:30:00 +05:30
 layout: post
-date: '2015-08-19 02:30:00 +0530'
 add_to_art_list: true
 thumbnail_path: post_thumbnails/sayit.jpg
 excerpt: Don't hesitate, sayit. Its not wrong.
 ---
-
 
 ```
 

@@ -1,17 +1,15 @@
 ---
 title: Motivational Writing Part1
-layout: post
+date: 2017-02-19 16:30:00 +05:30
 tags:
 - Motivational
 - Dangal
 - Time management
-published: true
+layout: post
 add_to_popular_list: true
 excerpt: Motivational writing by Anurag.
 thumbnail_path: post_thumbnails/yakeen.jpg
-date: '2017-02-19 16:30:00 +0530'
 ---
-
 
 Watched [Dangal](http://www.imdb.com/title/tt5074352/) and Interview of [Aamir Khan and Ranveer Singh](http://https://www.youtube.com/watch?v=-Huhzks6drY) . I learned so many things and I want to record that. 
 

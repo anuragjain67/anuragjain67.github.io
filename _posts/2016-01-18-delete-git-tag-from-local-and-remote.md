@@ -1,12 +1,11 @@
 ---
 title: Delete git tag from local and remote
-layout: post
+date: 2016-01-18 21:06:31 +05:30
 tags:
 - git
-published: true
+layout: post
 thumbnail_path: post_thumbnails/howto.png
 excerpt: git command to delete tag from local and remote
-date: '2016-01-18 21:06:31 +0530'
 ---
 
 ```

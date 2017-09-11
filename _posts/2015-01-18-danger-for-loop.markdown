@@ -1,12 +1,12 @@
 ---
 title: A Story of Danger forloop
+date: 2015-01-18 17:59:13 +05:30
+tags:
+- tech
 layout: post
-date: '2015-01-18 17:59:13 +0530'
 add_to_popular_list: true
 thumbnail_path: post_thumbnails/sherlock_homes.jpg
 excerpt: how dangerous it can be ...
-tags:
-- tech
 ---
 
 ## Trailer
