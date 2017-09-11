@@ -10,8 +10,6 @@ tags:
 add_to_popular_list: true
 excerpt: Whatever I have learnt about docker.
 thumbnail_path: "/uploads/Docker.png"
-absolute: true
-Field name: 
 layout: post
 ---
 
