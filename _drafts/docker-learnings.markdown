@@ -13,4 +13,30 @@ thumbnail_path: post_thumbnails/Docker.png
 layout: post
 ---
 
-abc
+**What is Docker**
+
+**Docker Components**
+
+* Docker Engine
+
+* Docker Daemon
+
+* Docker Machine
+
+* Docker Compose
+
+* Docker Swarm
+
+**Problems without docker**
+
+**How to apply it for development**
+
+* DockerFile
+
+* Explain Docker linking, networking, depends
+
+* Docker Volume
+
+* Docker Port
+
+* 
