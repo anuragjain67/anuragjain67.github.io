@@ -2,14 +2,14 @@
 title: Anuragjain67.Github.Io
 timezone: Asia/Kolkata
 collections:
+  images:
+    title: Images
+    output: true
   posts:
     title: Posts
     output: true
   uploads:
     title: Uploads
-    output: true
-  upload:
-    title: upload
     output: true
 baseurl: "/"
 url: http://anuragjain67.github.io
