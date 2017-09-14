@@ -10,6 +10,8 @@ Blog, Learnings, Poem etc.
 4. To build the site and serve it: `bundle exec jekyll serve`
 5. To test: `http://localhost:4000`
 
+# Through Docker 
+docker-compose up -d
 
 # Technologies
 1. Built with [Jekyll](http://jekyllrb.com/). This website is completely static
