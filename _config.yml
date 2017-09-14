@@ -2,9 +2,6 @@
 title: Anuragjain67.Github.Io
 timezone: Asia/Kolkata
 collections:
-  images:
-    title: Images
-    output: false
   posts:
     title: Posts
     output: true
