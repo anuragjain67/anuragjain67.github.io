@@ -8,6 +8,9 @@ collections:
   uploads:
     title: Uploads
     output: true
+  upload:
+    title: upload
+    output: true
 baseurl: "/"
 url: http://anuragjain67.github.io
 nav:
