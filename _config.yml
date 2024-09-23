@@ -12,7 +12,7 @@ baseurl: "/"
 url: http://anuragjain67.github.io
 nav:
   main:
-    blog: "https://blog.anurag.club"
+    blog: "https://blog.anuragjain.me"
     medium: "https://jainanurag.medium.com"
   writing:
     all: "/writing"
@@ -30,7 +30,7 @@ contact_urls:
     label: LinkedIn
     icon: linkedin-square
   blog:
-    url: https://blog.anurag.club
+    url: https://blog.anuragjain.me
     label: Blog
     icon: pencil-square
   medium:
