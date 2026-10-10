@@ -182,3 +182,21 @@ Final evidence: `/tmp/hero-summary-1440.png` and `/tmp/hero-summary-390.png`.
 The updated copy, language emphasis, single heading, and layouts were checked
 at 320/390/768/1024/1440 px with no horizontal overflow or JavaScript errors.
 Production build passed. No actionable P0/P1/P2 issues remain.
+
+## Poetry hidden from the notebook
+
+At the user's request, poetry is excluded while rendering the writing archive,
+topic lists, selected writing, related-note navigation, and RSS. The archive now
+shows eight non-poetry entries. The poetry/type filter and poetry promotional
+copy were removed; search and topic/source filtering remain available. Existing
+poem pages and discussion identifiers are retained.
+
+Evidence: `/tmp/writing-no-poetry-1440.png` and
+`/tmp/writing-no-poetry-390.png`, after clearing filters with search focused.
+Checked server-rendered exclusions and RSS counts, legacy `?kind=Poetry` cleanup,
+search/topic/empty/clear controls, eight entries without JavaScript, preserved
+poem URLs, and no overflow at 320/390/768/1024/1440 px. No browser JavaScript
+errors occurred. The first URL check incorrectly compared CSS-uppercase
+innerText to mixed case; checking the actual text content confirmed all three
+poem labels and pages remained intact. Production build passed.
+No actionable P0/P1/P2 issues remain.

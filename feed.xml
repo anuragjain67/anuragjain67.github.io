@@ -8,7 +8,8 @@
     <description>{% if site.description %}{{ site.description | xml_escape }}{% endif %}</description>    
     <link>{{ site.url }}</link>
     <atom:link href="{{ site.url }}/feed.xml" rel="self" type="application/rss+xml" />
-    {% for post in site.posts limit:10 %}
+    {% assign writing_posts = site.posts | where_exp: 'post', 'post.add_to_art_list != true' %}
+    {% for post in writing_posts limit:10 %}
       <item>
         <title>{{ post.title | xml_escape }}</title>
         {% if post.author.name %}

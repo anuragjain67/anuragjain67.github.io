@@ -38,8 +38,10 @@ Local font licenses are retained under `assets/fonts/portfolio/`.
 
 # Writing and analytics
 
-The notebook shares the homepage layout and offers search, topics, and poetry
-filters. Articles retain their original URLs and Disqus discussion IDs. Comments
+The notebook shares the homepage layout and offers search and topic filters.
+Poetry is omitted from the notebook, topic lists, related notes, and RSS;
+individual poems retain their existing URLs. Articles retain their original
+URLs and Disqus discussion IDs. Comments
 load on demand. The AJ favicon uses the site's ivory and forest-green palette.
 
 See [writing and analytics setup](docs/writing-and-analytics.md) for GA4 activation

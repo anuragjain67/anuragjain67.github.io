@@ -7,9 +7,7 @@
     const search = archive.querySelector('#writing-search');
     const topic = archive.querySelector('#writing-topic');
     const source = archive.querySelector('#writing-source');
-    const buttons = [...archive.querySelectorAll('[data-kind-filter]')];
     const clears = [...archive.querySelectorAll('.clear-filters')];
-    let kind = 'All';
     const normalize = value => value.toLocaleLowerCase().normalize('NFKC');
     const sources = [...new Set(entries.map(entry => entry.dataset.source))].sort();
     sources.forEach(name => source.add(new Option(name, name)));
@@ -18,21 +16,18 @@
     search.value = params.get('q') || '';
     topic.value = params.get('topic') || '';
     source.value = params.get('source') || '';
-    if (['Notes', 'Poetry'].includes(params.get('kind'))) kind = params.get('kind');
     function filter() {
       let count = 0;
       const query = normalize(search.value.trim());
       entries.forEach(entry => {
         const topics = JSON.parse(entry.dataset.topics || '[]') || [];
-        const visible = (kind === 'All' || entry.dataset.kind === kind)
-          && (!topic.value || topics.includes(topic.value))
+        const visible = (!topic.value || topics.includes(topic.value))
           && (!source.value || entry.dataset.source === source.value)
           && (!query || normalize(entry.dataset.search + ' ' + topics.join(' ')).includes(query));
         entry.hidden = !visible;
         if (visible) count++;
       });
-      buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.kindFilter === kind)));
-      const active = Boolean(query || topic.value || source.value || kind !== 'All');
+      const active = Boolean(query || topic.value || source.value);
       archive.querySelector('#writing-count').textContent = active ? `${count} of ${entries.length} entries` : `${count} entries, newest first`;
       archive.querySelector('.writing-empty').hidden = count > 0;
       clears[0].hidden = !active;
@@ -41,14 +36,12 @@
       if (query) next.searchParams.set('q', search.value.trim());
       if (topic.value) next.searchParams.set('topic', topic.value);
       if (source.value) next.searchParams.set('source', source.value);
-      if (kind !== 'All') next.searchParams.set('kind', kind);
       history.replaceState(null, '', next);
     }
-    buttons.forEach(button => button.addEventListener('click', () => { kind = button.dataset.kindFilter; filter(); }));
     let timer;
     search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(filter, 150); });
     [topic, source].forEach(control => control.addEventListener('change', filter));
-    clears.forEach(button => button.addEventListener('click', () => { clearTimeout(timer); search.value = ''; topic.value = ''; source.value = ''; kind = 'All'; filter(); search.focus(); }));
+    clears.forEach(button => button.addEventListener('click', () => { clearTimeout(timer); search.value = ''; topic.value = ''; source.value = ''; filter(); search.focus(); }));
     archive.querySelector('.writing-controls').hidden = false;
     filter();
   }

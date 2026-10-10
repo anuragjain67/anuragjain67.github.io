@@ -1,9 +1,11 @@
 # Writing and analytics
 
 The archive, tags, selected writing, and articles use the same field-notes design
-as the homepage. All 11 existing articles and their URLs remain available.
-`/writing/page2/` links to the complete archive. Search and filters enhance the
-archive progressively; without JavaScript every entry remains available.
+as the homepage. The notebook lists eight non-poetry articles. Poetry is omitted
+from archive/topic/selected lists, related article links, and RSS; all 11 existing
+article URLs remain available. `/writing/page2/` links to the notebook. Search
+and topic filters enhance it progressively; without JavaScript every listed
+entry remains available.
 
 ## Google Analytics 4
 

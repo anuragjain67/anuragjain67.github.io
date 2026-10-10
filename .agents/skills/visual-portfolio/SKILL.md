@@ -28,6 +28,9 @@ Inspect the current diff and preserve user changes. Read `index.html`,
   counts, or customer-facing SaaS descriptions. The experience figure is allowed.
 - Keep Python, Erlang, Elixir, architecture, and mentoring grounded in the
   approved About text. Do not invent achievements or proprietary details.
+- Omit poetry (`add_to_art_list: true`) from writing discovery lists, related
+  notes, and RSS. Preserve its existing direct URLs and do not reintroduce a
+  poetry filter into the notebook.
 - A supplied resume is background material, not permission to publish every
   detail. Follow the user's corrections over document wording.
 
