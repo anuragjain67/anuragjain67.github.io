@@ -63,6 +63,14 @@
 .agent-a{background:#18533e}.agent-b{background:#a05c13}.agent-c{background:#45609a}.agent-d{background:#8d4562}
 .portfolio-page .demo-explanation{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.65;margin:17px 0 9px;max-width:620px}
 .portfolio-page .demo-status{font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.5;color:var(--green);margin:0;min-height:36px}
+.deadlock-guide{border-top:1px solid var(--line);padding-top:20px;margin:18px 0;font:14px/1.65 'DM Sans',sans-serif}
+.deadlock-stages{display:flex;gap:24px;list-style:decimal inside;padding:0;margin:0 0 18px;font-size:12px;color:var(--muted)}
+.deadlock-stages li{flex:1;border-bottom:2px solid var(--line);padding-bottom:8px}
+.deadlock-stages li[aria-current=step]{color:var(--green);border-color:var(--green);font-weight:700}
+.portfolio-page #deadlock-story{font-size:15px;line-height:1.7;margin-bottom:16px}
+.deadlock-guide button{font:600 14px 'DM Sans',sans-serif;border:1px solid var(--green);border-radius:3px;background:var(--green);color:white;padding:12px 18px;min-height:44px;cursor:pointer;margin-bottom:12px}
+.deadlock-guide button:disabled{background:transparent;color:var(--muted);border-color:var(--line);cursor:default}
+.portfolio-page .deadlock-guide .small-note{font:12px/1.6 'DM Sans',sans-serif;margin:0 0 12px}
 .architecture-figure{padding-top:15px}
 .architecture-figure img{width:100%;mix-blend-mode:multiply}
 .portfolio-page .architecture-story{padding-top:57px;padding-bottom:66px}

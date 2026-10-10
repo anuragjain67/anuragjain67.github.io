@@ -10,7 +10,8 @@
   var colors = ['#18533e', '#a05c13', '#45609a', '#8d4562'];
   function same(a, b) { return a[0] === b[0] && a[1] === b[1]; }
   function key(p) { return p[0] + ',' + p[1]; }
-  function walkable(p) {
+  function walkable(p, layout) {
+    if (layout === 'deadlock') return (p[1] === 4 && p[0] >= 2 && p[0] <= 10) || same(p, [4, 3]);
     if (p[0] < 0 || p[0] >= COLS || p[1] < 0 || p[1] >= ROWS) return false;
     return !([1, 2, 6, 7].includes(p[1]) && [1, 2, 4, 5, 7, 8, 10, 11].includes(p[0]));
   }
@@ -104,7 +105,7 @@
       row(0, 3, 3).concat(row(3, 9, 4), row(9, 12, 3)),
       row(0, 3, 5).concat(row(3, 9, 4), row(9, 12, 5)),
       [[3, 0], [3, 1], [3, 2], [3, 3]].concat(row(3, 9, 4), [[9, 3], [9, 2], [9, 1]], row(9, 12, 0))];
-    var deadlockPaths = [row(0, 6, 4), row(12, 7, 4)];
+    var deadlockPaths = [row(4, 6, 4), row(9, 7, 4)];
     var scenarios = {
       congestion: {
         schedules: queueSchedules(congestionPaths), goals: congestionPaths.map(function (path) { return path[path.length - 1]; }),
@@ -112,9 +113,17 @@
         end: 'All agents arrived, after queuing through the shared aisle.'
       },
       deadlock: {
-        schedules: deadlockPaths, goals: [[12, 4], [0, 4]], duration: 12,
-        explanation: 'Two agents meet head-on. Each needs the cell occupied by the other, so both stop. This local policy cannot resolve the deadlock, even though a bypass exists.',
-        end: 'Deadlock: A and B are still waiting for each other. Neither has reached its goal.'
+        schedules: deadlockPaths, goals: [[10, 4], [2, 4]], layout: 'deadlock',
+        explanation: 'A wants to go right; B wants to go left. In this single-lane aisle, each requests the cell occupied by the other. Their forward-only policy makes both wait. A coordinated backoff can break this circular wait.',
+        end: 'Deadlock: A waits for B’s cell, and B waits for A’s cell. Waiting longer will not help. Choose Resolve deadlock to let A yield.'
+      },
+      deadlockResolved: {
+        layout: 'deadlock', goals: [[10, 4], [2, 4]],
+        schedules: [
+          [[6, 4], [5, 4], [4, 4], [4, 3], [4, 3], [4, 3], [4, 3], [4, 3]].concat(row(4, 10, 4)),
+          [[7, 4], [7, 4], [7, 4], [7, 4]].concat(row(6, 2, 4))
+        ],
+        end: 'Deadlock resolved: A yielded into the passing bay, B passed, then A continued. Both robots reached their goals.'
       },
       coordinated: {
         schedules: plan([[0, 4], [12, 4], [6, 0], [6, 8]], [[12, 4], [0, 4], [6, 8], [6, 0]]),
@@ -126,17 +135,17 @@
     Object.keys(scenarios).forEach(function (name) {
       var scenario = scenarios[name];
       scenario.duration = scenario.duration || Math.max.apply(null, scenario.schedules.map(function (path) { return path.length - 1; }));
-      validate(scenario.schedules);
+      validate(scenario.schedules, scenario.layout);
     });
     return scenarios;
   }
 
-  function validate(paths) {
+  function validate(paths, layout) {
     var end = Math.max.apply(null, paths.map(function (path) { return path.length; }));
     for (var t = 0; t < end; t++) {
       paths.forEach(function (path, i) {
         var p = at(path, t);
-        if (!walkable(p)) throw new Error('Path crosses a shelf or boundary.');
+        if (!walkable(p, layout)) throw new Error('Path crosses a shelf or boundary.');
         if (t && Math.abs(p[0] - at(path, t - 1)[0]) + Math.abs(p[1] - at(path, t - 1)[1]) > 1) throw new Error('Path jumps cells.');
         for (var j = i + 1; j < paths.length; j++) {
           if (same(p, at(paths[j], t))) throw new Error('Vertex conflict.');
@@ -157,25 +166,75 @@
     var play = document.getElementById('demo-play'), step = document.getElementById('demo-step');
     var reset = document.getElementById('demo-reset'), status = document.getElementById('demo-status');
     var explanation = document.getElementById('demo-explanation');
+    var guide = document.getElementById('deadlock-guide');
+    var resolve = document.getElementById('demo-resolve');
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     var name = 'coordinated', tick = 0, elapsed = 0, running = false, lastTime = null, frame = null;
+    var recovering = false;
     var cell = 60;
     canvas.hidden = false;
     container.querySelector('.demo-fallback').hidden = true;
     container.querySelector('.demo-controls').hidden = false;
     container.querySelector('.demo-legend').hidden = false;
 
-    function center(p) { return [(p[0] + .5) * cell, (p[1] + .5) * cell]; }
+    function activeScenario() { return scenarios[recovering ? 'deadlockResolved' : name]; }
+    function interval() { return name === 'deadlock' ? 700 : 450; }
+    function center(p) { return [(p[0] + .5 - (name === 'deadlock' ? 1 : 0)) * cell, (p[1] + .5 - (name === 'deadlock' ? 2 : 0)) * cell]; }
+    function phase() {
+      if (!recovering) return tick >= scenarios.deadlock.duration ? 'blocked' : 'approaching';
+      if (tick >= activeScenario().duration) return 'resolved';
+      return tick < 3 ? 'yielding' : tick < 8 ? 'passing' : 'resuming';
+    }
+    function updateGuide() {
+      if (!guide) return;
+      guide.hidden = name !== 'deadlock';
+      if (guide.hidden) return;
+      var state = phase();
+      if (guide.dataset.phase === state && guide.dataset.motion === String(reduced.matches)) return;
+      var messages = {
+        approaching: 'Two robots approach from opposite directions. The aisle is only one cell wide.',
+        blocked: 'A needs B’s cell. B needs A’s cell. Both wait for the other to move first. That circular wait is the deadlock.',
+        yielding: 'The coordinator asks A to back up and enter the passing bay. B waits until the aisle is clear.',
+        passing: 'A waits in the passing bay while B moves past. The circular wait is broken.',
+        resuming: 'B is clear of the bay. A can re-enter the aisle and continue to its goal.',
+        resolved: 'Both robots reached their goals. One robot yielding created room for the other to pass.'
+      };
+      guide.dataset.phase = state;
+      guide.dataset.motion = String(reduced.matches);
+      document.getElementById('deadlock-story').textContent = messages[state];
+      canvas.setAttribute('aria-label', 'Illustrative deadlock walkthrough. ' + messages[state]);
+      var stage = state === 'approaching' ? 'approach' : state === 'blocked' ? 'blocked' : 'resolve';
+      guide.querySelectorAll('[data-deadlock-stage]').forEach(function (item) {
+        if (item.dataset.deadlockStage === stage) item.setAttribute('aria-current', 'step');
+        else item.removeAttribute('aria-current');
+      });
+      resolve.disabled = state !== 'blocked';
+      resolve.textContent = state === 'resolved' ? 'Deadlock resolved' : recovering ? 'Recovery in progress' : 'Resolve deadlock';
+      document.getElementById('deadlock-action-hint').textContent = reduced.matches
+        ? 'Use Advance or Step to follow each move. Reset starts the example again.'
+        : state === 'approaching' ? 'Press Play or Step to see the robots meet.'
+          : state === 'blocked' ? 'Try a coordinated recovery: A backs up into the bay so B can pass.'
+            : state === 'resolved' ? 'Reset to see the standstill again.' : 'Pause or Step to inspect the recovery.';
+    }
     function paint(position) {
-      var scenario = scenarios[name];
+      var scenario = activeScenario(), focused = name === 'deadlock';
+      var height = focused ? 355 : 540;
+      if (canvas.height !== height) canvas.height = height;
+      canvas.style.aspectRatio = '780 / ' + height;
+      cell = focused ? 780 / 11 : 60;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#f8f5ed'; ctx.fillRect(0, 0, 780, 540);
-      ctx.fillStyle = 'rgba(194,132,41,.10)'; ctx.fillRect(6 * cell, 0, cell, 540);
+      ctx.fillStyle = '#f8f5ed'; ctx.fillRect(0, 0, 780, height);
+      if (!focused) { ctx.fillStyle = 'rgba(194,132,41,.10)'; ctx.fillRect(6 * cell, 0, cell, height); }
       ctx.strokeStyle = 'rgba(84,91,76,.13)'; ctx.lineWidth = 1;
-      for (var x = 0; x <= COLS; x++) { ctx.beginPath(); ctx.moveTo(x * cell, 0); ctx.lineTo(x * cell, 540); ctx.stroke(); }
-      for (var y = 0; y <= ROWS; y++) { ctx.beginPath(); ctx.moveTo(0, y * cell); ctx.lineTo(780, y * cell); ctx.stroke(); }
-      for (var sx = 0; sx < COLS; sx++) for (var sy = 0; sy < ROWS; sy++) {
-        if (walkable([sx, sy])) continue;
+      for (var x = 0; x <= (focused ? 11 : COLS); x++) { ctx.beginPath(); ctx.moveTo(x * cell, 0); ctx.lineTo(x * cell, height); ctx.stroke(); }
+      for (var y = 0; y <= (focused ? 5 : ROWS); y++) { ctx.beginPath(); ctx.moveTo(0, y * cell); ctx.lineTo(780, y * cell); ctx.stroke(); }
+      for (var sx = focused ? 1 : 0; sx < (focused ? 12 : COLS); sx++) for (var sy = focused ? 2 : 0; sy < (focused ? 7 : ROWS); sy++) {
+        if (walkable([sx, sy], scenario.layout)) continue;
+        if (focused) {
+          var wall = center([sx, sy]);
+          ctx.fillStyle = '#dfe1d6'; ctx.fillRect(wall[0] - cell / 2 + 2, wall[1] - cell / 2 + 2, cell - 4, cell - 4);
+          continue;
+        }
         ctx.fillStyle = 'rgba(57,75,49,.035)'; ctx.fillRect(sx * cell + 5, sy * cell + 5, 50, 50);
         ctx.strokeStyle = 'rgba(57,65,52,.45)'; ctx.strokeRect(sx * cell + 5, sy * cell + 5, 50, 50);
         ctx.strokeStyle = 'rgba(57,65,52,.19)';
@@ -183,8 +242,17 @@
           ctx.beginPath(); ctx.moveTo(sx * cell + 8, sy * cell + shelf); ctx.lineTo(sx * cell + 52, sy * cell + shelf); ctx.stroke();
         }
       }
+      if (focused) {
+        var bay = center([4, 3]);
+        ctx.fillStyle = '#e4ede3'; ctx.fillRect(bay[0] - cell / 2 + 3, bay[1] - cell / 2 + 3, cell - 6, cell - 6);
+        ctx.strokeStyle = '#184c39'; ctx.lineWidth = 2; ctx.setLineDash([5, 4]);
+        ctx.strokeRect(bay[0] - cell / 2 + 3, bay[1] - cell / 2 + 3, cell - 6, cell - 6); ctx.setLineDash([]);
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#184c39'; ctx.font = '600 19px "DM Sans", sans-serif';
+        ctx.fillText('Passing bay', bay[0], 39);
+        ctx.fillText('Single-lane aisle', 555, 39);
+      }
       scenario.schedules.forEach(function (path, i) {
-        var planned = name === 'deadlock' ? row(i === 0 ? 0 : 12, i === 0 ? 12 : 0, 4) : path;
+        var planned = focused && !recovering ? row(path[0][0], scenario.goals[i][0], 4) : path;
         ctx.beginPath(); ctx.strokeStyle = colors[i]; ctx.globalAlpha = .38; ctx.lineWidth = 2; ctx.setLineDash([6, 6]);
         planned.forEach(function (p, index) { var c = center(p); if (index === 0) ctx.moveTo(c[0], c[1]); else ctx.lineTo(c[0], c[1]); });
         ctx.stroke(); ctx.setLineDash([]); ctx.globalAlpha = 1;
@@ -196,18 +264,33 @@
       scenario.schedules.forEach(function (path, i) {
         var from = at(path, Math.floor(position)), to = at(path, Math.min(Math.floor(position) + 1, scenario.duration));
         var part = position - Math.floor(position), point = center([from[0] + (to[0] - from[0]) * part, from[1] + (to[1] - from[1]) * part]);
-        ctx.beginPath(); ctx.arc(point[0], point[1], 14, 0, 2 * Math.PI); ctx.fillStyle = colors[i]; ctx.fill();
+        ctx.beginPath(); ctx.arc(point[0], point[1], focused ? 20 : 14, 0, 2 * Math.PI); ctx.fillStyle = colors[i]; ctx.fill();
         ctx.strokeStyle = '#f8f5ed'; ctx.lineWidth = 3; ctx.stroke();
-        ctx.fillStyle = '#fff'; ctx.font = '700 15px "DM Sans", sans-serif'; ctx.fillText(String.fromCharCode(65 + i), point[0], point[1]);
+        ctx.fillStyle = '#fff'; ctx.font = '700 ' + (focused ? 20 : 15) + 'px "DM Sans", sans-serif'; ctx.fillText(String.fromCharCode(65 + i), point[0], point[1]);
       });
+      if (focused && !recovering && position >= scenarios.deadlock.duration) {
+        scenario.schedules.forEach(function (path, i) {
+          var occupied = center(at(path, tick)), other = center(at(scenario.schedules[1 - i], tick));
+          ctx.strokeStyle = '#9b3e2e'; ctx.lineWidth = 3;
+          ctx.strokeRect(occupied[0] - cell / 2 + 4, occupied[1] - cell / 2 + 4, cell - 8, cell - 8);
+          var direction = i === 0 ? 1 : -1, offset = i === 0 ? -26 : 26;
+          var endX = other[0] - direction * 20, arrowY = occupied[1] + offset;
+          ctx.beginPath(); ctx.moveTo(occupied[0], arrowY); ctx.lineTo(endX, arrowY);
+          ctx.lineTo(endX - direction * 8, arrowY - 5); ctx.moveTo(endX, arrowY); ctx.lineTo(endX - direction * 8, arrowY + 5); ctx.stroke();
+        });
+        ctx.fillStyle = '#9b3e2e'; ctx.font = '700 22px "DM Sans", sans-serif';
+        ctx.fillText('A waits for B. B waits for A.', 390, 294);
+      }
       canvas.dataset.tick = String(Math.floor(position));
       canvas.dataset.scenario = name;
+      canvas.dataset.phase = focused ? phase() : '';
+      updateGuide();
     }
     function buttons() {
-      play.querySelector('span').textContent = reduced.matches ? 'Advance' : running ? 'Pause' : tick >= scenarios[name].duration ? 'Replay' : 'Play';
+      play.querySelector('span').textContent = reduced.matches ? 'Advance' : running ? 'Pause' : tick >= activeScenario().duration ? 'Replay' : 'Play';
       play.querySelector('i').className = 'fa ' + (running ? 'fa-pause' : 'fa-play');
-      step.disabled = running || tick >= scenarios[name].duration;
-      play.disabled = reduced.matches && tick >= scenarios[name].duration;
+      step.disabled = running || tick >= activeScenario().duration;
+      play.disabled = reduced.matches && tick >= activeScenario().duration;
     }
     function stop() {
       running = false; lastTime = null;
@@ -216,21 +299,30 @@
       buttons();
     }
     function announce(prefix) {
-      status.textContent = tick >= scenarios[name].duration ? scenarios[name].end : prefix + ' Step ' + tick + ' of ' + scenarios[name].duration + '. Squares mark goals; filled circles mark agents.';
+      var scenario = activeScenario();
+      status.textContent = tick >= scenario.duration ? scenario.end : prefix + ' Step ' + tick + ' of ' + scenario.duration + '. Squares mark goals; filled circles mark agents.';
     }
-    function resetState() { stop(); tick = 0; elapsed = 0; paint(0); buttons(); announce('Ready.'); }
+    function resetState() {
+      stop(); recovering = false; tick = 0; elapsed = 0;
+      if (guide) delete guide.dataset.phase;
+      paint(0); buttons(); announce('Ready.');
+    }
     function advance() {
-      if (tick >= scenarios[name].duration) return;
-      tick++; elapsed = tick * 450; paint(tick); buttons(); announce('Advanced.');
+      if (tick >= activeScenario().duration) return;
+      tick++; elapsed = tick * interval(); paint(tick); buttons(); announce('Advanced.');
     }
     function animate(timestamp) {
       if (!running) return;
       if (lastTime !== null) elapsed += Math.min(timestamp - lastTime, 100);
       lastTime = timestamp;
-      var progress = Math.min(elapsed / 450, scenarios[name].duration);
+      var progress = Math.min(elapsed / interval(), activeScenario().duration);
+      var previousTick = tick;
       tick = Math.floor(progress); paint(progress);
-      if (progress >= scenarios[name].duration) { stop(); announce('Finished.'); }
-      else frame = window.requestAnimationFrame(animate);
+      if (progress >= activeScenario().duration) { stop(); announce('Finished.'); }
+      else {
+        if (name === 'deadlock' && tick !== previousTick && [3, 8].includes(tick)) announce(document.getElementById('deadlock-story').textContent);
+        frame = window.requestAnimationFrame(animate);
+      }
     }
     container.querySelectorAll('button[data-scenario]').forEach(function (button) {
       button.addEventListener('click', function () {
@@ -247,13 +339,18 @@
     play.addEventListener('click', function () {
       if (reduced.matches) { advance(); return; }
       if (running) { stop(); announce('Paused.'); return; }
-      if (tick >= scenarios[name].duration) resetState();
+      if (tick >= activeScenario().duration) resetState();
       running = true; buttons(); status.textContent = 'Playing the ' + name + ' example. Pause or reset at any time.';
       frame = window.requestAnimationFrame(animate);
     });
+    if (resolve) resolve.addEventListener('click', function () {
+      if (name !== 'deadlock' || recovering || tick < scenarios.deadlock.duration) return;
+      stop(); recovering = true; tick = 0; elapsed = 0; paint(0); buttons(); announce('A is yielding into the passing bay.');
+      if (!reduced.matches) { running = true; buttons(); frame = window.requestAnimationFrame(animate); }
+    });
     step.addEventListener('click', advance);
     reset.addEventListener('click', resetState);
-    reduced.addEventListener('change', function () { stop(); paint(tick); elapsed = tick * 450; buttons(); announce('Paused.'); });
+    reduced.addEventListener('change', function () { stop(); paint(tick); elapsed = tick * interval(); buttons(); announce('Paused.'); });
     document.addEventListener('visibilitychange', function () { if (document.hidden && running) { stop(); announce('Paused.'); } });
     explanation.textContent = scenarios[name].explanation;
     resetState();

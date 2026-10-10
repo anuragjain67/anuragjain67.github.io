@@ -210,3 +210,40 @@ initial state, step/reset, switching all scenarios, and mobile overflow.
 The build and all six schedule checks passed. Evidence:
 `/tmp/mapf-coordinated-first-desktop.png` (initial default, transitions settled)
 and `/tmp/mapf-coordinated-first-mobile.png`. No P0/P1/P2 findings remain.
+
+## Deadlock and coordinated recovery walkthrough
+
+final result: passed
+
+The deadlock now uses a one-cell-wide aisle with a single passing bay. Two
+robots approach, stop at adjacent cells, and each requests the other's occupied
+cell. Red cell outlines and opposing request arrows make the circular wait
+visible. The three-stage guide explains approach, waiting, and recovery in text.
+**Resolve deadlock** starts from those same blocked positions: A backs up into
+the bay, B passes, then A continues to its original goal. The original
+Coordinated scenario remains the initial selection.
+
+The guide and action were moved above the canvas after the first mobile capture
+showed too much distance between the recovery button and the moving agents.
+The revised desktop/mobile captures retain the selected ivory/green field-notes
+design, and keep the current explanation and recovery action beside the visual.
+The diagram is a visualization of checked illustrative schedules, with no claim
+that it is a production planner or an optimal solution.
+
+Inspected final evidence:
+
+- Blocked state: `/tmp/deadlock-blocked-desktop.png` and
+  `/tmp/deadlock-blocked-mobile.png`.
+- A yielding in the bay: `/tmp/deadlock-yield-desktop.png` and
+  `/tmp/deadlock-yield-mobile.png`.
+- Both goals reached: `/tmp/deadlock-resolved-desktop.png`.
+
+Jekyll build and all 11 schedule checks passed, including cell/edge conflicts,
+aisle and bay boundaries, continuous recovery from the standstill, and arrival
+at both original goals. Chromium checks passed for autoplay, pause/resume,
+replay, reset while playing, scenario switching, action states, Enter/Space
+keyboard operation, accessible phase descriptions, and manual recovery with
+reduced motion. No horizontal overflow at 320/390/768/1024/1440 px or homepage
+JavaScript errors. Without JavaScript, the original illustration and a textual
+circular-wait/yielding explanation remain available. Writing and RSS respond
+successfully. No actionable P0/P1/P2 findings remain.

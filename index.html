@@ -41,6 +41,16 @@ nav_item: home
         <button type="button" id="demo-reset"><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button>
       </div>
     </div>
+    <div id="deadlock-guide" class="deadlock-guide" hidden>
+      <ol class="deadlock-stages" aria-label="Deadlock walkthrough">
+        <li data-deadlock-stage="approach">Meet in the aisle</li>
+        <li data-deadlock-stage="blocked">Wait for each other</li>
+        <li data-deadlock-stage="resolve">Yield and pass</li>
+      </ol>
+      <p id="deadlock-story"></p>
+      <button type="button" id="demo-resolve" disabled>Resolve deadlock</button>
+      <p id="deadlock-action-hint" class="small-note"></p>
+    </div>
     <figure class="demo-figure">
       <canvas id="warehouse-canvas" width="780" height="540" role="img" aria-label="Illustrative MAPF simulation. Four labeled agents share a warehouse aisle; text below explains the selected scenario." hidden></canvas>
       <img class="demo-fallback" src="/assets/img/portfolio/warehouse-notes.webp" width="1000" height="1000" alt="Coordinated routes through a shared warehouse aisle.">
@@ -49,7 +59,7 @@ nav_item: home
     <div class="demo-legend" aria-label="Agent colors" hidden><span><b class="agent-key agent-a">A</b> Agent A</span><span><b class="agent-key agent-b">B</b> Agent B</span><span><b class="agent-key agent-c">C</b> Agent C</span><span><b class="agent-key agent-d">D</b> Agent D</span></div>
     <p id="demo-explanation" class="demo-explanation">When several paths share an aisle, robots need to coordinate access. Waiting and rerouting can help avoid conflicts and keep the fleet moving.</p>
     <p id="demo-status" class="demo-status" role="status" aria-live="polite" aria-atomic="true">Select a scenario and play to explore.</p>
-    <noscript><p class="demo-explanation">Enable JavaScript to play the examples. Congestion creates queues; a deadlock prevents progress; coordinated paths use waiting or rerouting to avoid conflicts.</p></noscript>
+    <noscript><p class="demo-explanation">Enable JavaScript to play the examples. In the deadlock example, A waits for B’s occupied cell while B waits for A’s. A coordinator asks A to back up into a passing bay, lets B pass, then sends A onward. Coordinated yielding and rerouting can break the circular wait.</p></noscript>
   </div>
 </section>
 

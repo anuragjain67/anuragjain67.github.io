@@ -16,8 +16,12 @@ docker-compose up -d
 # Visual homepage
 
 The homepage uses the `portfolio` layout, local fonts, and field-notes illustrations.
-Its MAPF demonstration shows three illustrative scenarios: congestion, deadlock,
-and coordinated paths. The decomposition diagram uses generic service boundaries;
+Its MAPF demonstration opens with coordinated paths, with congestion and deadlock
+examples also available. The deadlock walkthrough shows two robots waiting for
+each other's occupied cell in a single-lane aisle. Use **Resolve deadlock** to
+watch A back into a passing bay, let B pass, and continue to its original goal.
+Reduced motion keeps the walkthrough manual with Advance or Step.
+The decomposition diagram uses generic service boundaries;
 neither visual represents a production system or measured company results.
 
 Run the schedule checks with Node.js (18 or later):
@@ -27,7 +31,7 @@ node --test tests/mapf-demo.test.cjs
 ```
 
 Build and serve with the Jekyll commands above. For UI changes, also check the
-scenario controls, play/pause/reset, keyboard navigation, reduced motion, and
+scenario controls, play/pause/reset, deadlock recovery, keyboard navigation, reduced motion, and
 mobile layout in a browser. The existing writing archive and RSS should still work.
 
 Repository-local guidance is available for
