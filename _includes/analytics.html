@@ -1,0 +1,10 @@
+{% assign measurement_prefix = site.google_analytics | slice: 0, 2 %}
+{% if jekyll.environment == 'production' and measurement_prefix == 'G-' %}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics | uri_escape }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', {{ site.google_analytics | jsonify }});
+</script>
+{% endif %}

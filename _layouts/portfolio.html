@@ -8,15 +8,7 @@
 </head>
 <body class="portfolio-page">
   <a class="skip-link" href="#main">Skip to content</a>
-  <header class="portfolio-nav wrap">
-    <a class="wordmark" href="/" aria-label="Anurag Jain, home">Anurag Jain</a>
-    <nav aria-label="Main navigation">
-      <a href="#work">Work</a>
-      <a href="{{ site.nav.main.blog }}">Notes</a>
-      <a href="#about">About</a>
-      <a href="#connect">Connect</a>
-    </nav>
-  </header>
+  {% include journal-nav.html %}
   <main id="main" class="wrap">{{ content }}</main>
   <footer class="portfolio-footer wrap">
     <span>&copy; {{ site.time | date: "%Y" }} Anurag Jain</span>

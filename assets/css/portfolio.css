@@ -11,6 +11,7 @@
 .portfolio-page .wrap{width:calc(100% - 112px);max-width:1328px;margin:0 auto}
 .portfolio-page h1,.portfolio-page h2{font-family:Lora,Georgia,serif;color:var(--ink);font-weight:700;letter-spacing:-.045em;line-height:1.12;margin:0}
 .portfolio-page h1{font-size:clamp(48px,5.7vw,82px)}
+.portfolio-page .hero h1{font-size:clamp(40px,4.6vw,66px)}
 .portfolio-page h2{font-size:clamp(35px,4vw,56px)}
 .portfolio-page p{margin:0 0 22px}
 .portfolio-page strong{font-weight:700}
@@ -31,7 +32,8 @@
 .label-rule{width:45px;height:1px;background:var(--line);display:inline-block;flex-shrink:0}
 .ink-rule{display:block;width:54px;height:3px;background:var(--green);margin:28px 0}
 .portfolio-page .hero-intro{font-size:26px;line-height:1.5;max-width:620px;margin-bottom:14px;letter-spacing:-.02em}
-.hero-intro strong{font-weight:400}
+.hero-intro strong{font-weight:700}
+.portfolio-page .hero-summary{font-size:19px;line-height:1.7;max-width:620px;margin:20px 0 24px}
 .portfolio-page .hero-role{font-family:'DM Sans',sans-serif;font-size:18px;margin-bottom:32px}
 .primary-link{display:inline-flex;align-items:center;gap:20px;border:1px solid var(--green);background:var(--green);color:white!important;padding:15px 22px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;min-height:48px;transition:background .15s}
 .primary-link:hover{background:#0d3527}

@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  <link rel="stylesheet" href="/assets/css/portfolio.css">
+  <link rel="stylesheet" href="/assets/css/writing.css">
+  <script defer src="/assets/js/writing.js"></script>
+</head>
+<body class="portfolio-page journal-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  {% include journal-nav.html %}
+  <main id="main" class="wrap" tabindex="-1">{{ content }}</main>
+  <footer class="portfolio-footer wrap">
+    <span>&copy; {{ site.time | date: "%Y" }} Anurag Jain</span>
+    <a href="/feed.xml">Follow via RSS <i class="fa fa-rss" aria-hidden="true"></i></a>
+  </footer>
+</body>
+</html>

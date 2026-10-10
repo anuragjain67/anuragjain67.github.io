@@ -9,10 +9,12 @@ collections:
     title: Uploads
     output: true
 baseurl: "/"
-url: http://anuragjain67.github.io
+url: https://anuragjain.me
+# Set the public G-... ID from a GA4 web stream. Loaded only in production builds.
+google_analytics: "G-SBCP6GHRZR"
 nav:
   main:
-    blog: "https://blog.anuragjain.me"
+    blog: "/writing/"
     medium: "https://jainanurag.medium.com"
   writing:
     all: "/writing"
@@ -30,7 +32,7 @@ contact_urls:
     label: LinkedIn
     icon: linkedin-square
   blog:
-    url: https://blog.anuragjain.me
+    url: /writing/
     label: Blog
     icon: pencil-square
   medium:
@@ -41,8 +43,6 @@ contact_urls:
     url: https://github.com/anuragjain67/
     label: GitHub
     icon: github-square
-paginate: 10
-paginate_path: "/writing/page:num"
 permalink: "/writing/:year/:month/:day/:title"
 sass:
   sass_dir: "/assets/css"
@@ -51,5 +51,7 @@ highlighter: rouge
 exclude:
 - design-qa.md
 - tests
+- tools
+- docs
 gems:
 - jekyll-paginate

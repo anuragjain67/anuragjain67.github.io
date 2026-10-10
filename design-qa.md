@@ -66,8 +66,8 @@ no claim that the example is GreyOrange's production planner or optimal MAPF.
 
 The About section retains the user's approved career details and education, so
 it is longer than the design concept. The architecture diagram is explicitly
-conceptual with generic service labels. Existing writing routes and the external
-blog remain available through navigation and the footer.
+conceptual with generic service labels. Existing writing routes remain available through the shared navigation and
+footer. The notebook now uses the same design as the homepage.
 
 ## Validation
 
@@ -99,3 +99,86 @@ P3: Generated pencil marks and service-label placement differ slightly from the
 concept image; subject, legibility, and art direction are preserved. Validation
 used Chromium; other browser engines were not exercised. No automated check
 replaces a full assistive-technology audit.
+
+
+## Writing and AJ icon iteration — 10 October 2026
+
+final result: passed
+
+The selected field-notes direction remains the visual reference. The writing
+page uses the homepage's colors, local serif/sans fonts, shared navigation,
+thin rules, open spacing, and existing landscape illustration. Its article
+list and reading column are adaptations to editorial content, not replacements
+for the homepage's interactive work explanations.
+
+Evidence inspected:
+
+- Homepage and writing at matching 1440 × 1000 viewports:
+  `/tmp/home-writing-comparison.png`.
+- Complete desktop/mobile writing captures: `/tmp/writing-desktop-final.png`,
+  `/tmp/writing-mobile-final.png`.
+- Complete desktop/mobile long article captures: `/tmp/article-desktop-final.png`,
+  `/tmp/article-mobile-final.png`.
+- Original writing capture: `/tmp/writing-before.png`.
+- Generated AJ source asset:
+  `/workspace/generated_images/exec-f0a097bc-1048-4f14-b4f8-8e9823348641.png`.
+- AJ exports at native small sizes: `/tmp/aj-icon-sizes.png`.
+- Browser results: `/tmp/writing-checks.json`.
+- Real GA4 collector test: `/tmp/ga4-live-checks.json`.
+
+No actionable P0/P1/P2 visual findings remain. The archive stacks controls and
+metadata on mobile, preserves readable titles and body copy, and keeps links
+and keyboard focus visible. AJ is readable at 16 px; new icon filenames avoid
+the previous browser favicon cache. The reading sidebar appears for articles
+with several headings and is omitted on mobile, where the original article's
+own contents and headings remain available.
+
+Verified: all 11 existing entries, 3 poetry entries, 8 notes, case-insensitive
+search, topic/type filters, empty results and clear actions, filter restoration
+from URLs, topic fragment links, article contents links, all old article routes,
+legacy archive page 2, keyboard access, JavaScript-free reading, and no horizontal
+overflow at 320/390/768/1024/1440 px for the archive and 320/390/1440 px for all
+articles and related pages. No local failed assets or browser JavaScript errors
+occurred. Comment loading was checked against a mock Disqus response with the
+original identifier shape; live stored discussions remain outside that check.
+
+Build passed. Seven importer checks and six MAPF schedule checks passed. GA4 was
+checked for one initialization across five production page types using a mock
+ID. A separate check used the real Google tag and supplied stream ID through
+TLS-verified HTTP transport: Google accepted a `page_view` for the writing URL
+with HTTP 204. The property's Realtime report still requires account access.
+
+External blog/Medium migration is blocked by source HTTP 403 (Cloudflare 1010),
+not by a UI defect. No source content was fabricated or silently claimed as
+imported. The export-based importer and review instructions are prepared. Likes
+have not been added; the existing Disqus integration is retained for comments.
+
+## Personal homepage introduction
+
+The user requested a personal portfolio introduction instead of a product-like
+headline. The hero now says “Hi, I’m Anurag. I work on software for robot fleets.”
+The next paragraph explicitly says he is currently leading MAPF at GreyOrange,
+followed by title and experience. The button says “Explore my work.” This copy
+change takes precedence over the original reference headline.
+
+An initial desktop capture wrapped the middle sentence across two lines. The
+hero heading size was adjusted to retain the intended three-line introduction.
+Final desktop/mobile evidence: `/tmp/personal-hero-desktop.png` and
+`/tmp/personal-hero-mobile.png`. The heading, current-work wording, and CTA were
+checked at 320/390/768/1024/1440 px; no horizontal overflow. Production build
+passed after the change. No actionable P0/P1/P2 issues remain.
+
+## Concise homepage summary
+
+The hero now uses only “Hi, I’m Anurag.” as its heading. Current MAPF leadership
+at GreyOrange leads the introduction, followed by backend engineering,
+architecture, and team leadership with Python, Erlang, and Elixir emphasized.
+Title and experience follow the work summary. The repeated backend/languages
+paragraph was moved from About to the hero; About retains mentoring and career
+background. This replaces the previous “I lead software for robot fleets” line
+at the user's request.
+
+Final evidence: `/tmp/hero-summary-1440.png` and `/tmp/hero-summary-390.png`.
+The updated copy, language emphasis, single heading, and layouts were checked
+at 320/390/768/1024/1440 px with no horizontal overflow or JavaScript errors.
+Production build passed. No actionable P0/P1/P2 issues remain.

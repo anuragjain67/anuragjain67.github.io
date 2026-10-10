@@ -1,0 +1,14 @@
+{% assign entry = include.post %}
+{% assign kind = 'Notes' %}{% if entry.add_to_art_list %}{% assign kind = 'Poetry' %}{% endif %}
+{% assign source = entry.source_platform | default: 'Original' %}
+{% assign words = entry.content | strip_html | number_of_words %}
+{% assign minutes = words | divided_by: 180 | plus: 1 %}
+<article class="journal-entry" data-writing-entry data-search="{{ entry.title | append: ' ' | append: entry.excerpt | strip_html | escape }}" data-topics="{{ entry.tags | jsonify | escape }}" data-kind="{{ kind }}" data-source="{{ source | escape }}">
+  <div class="entry-meta"><time datetime="{{ entry.date | date_to_xmlschema }}">{{ entry.date | date: "%d %b %Y" }}</time><span>{{ minutes }} min read · {{ kind }}</span>{% if source != 'Original' %}<span>{{ source | escape }}</span>{% endif %}</div>
+  <div class="entry-copy">
+    <h3><a href="{{ entry.url }}">{{ entry.title | escape }}</a></h3>
+    <p>{{ entry.excerpt | strip_html | truncate: 210 | escape }}</p>
+    <ul class="entry-tags" aria-label="Topics">{% for tag in entry.tags limit:3 %}<li><a href="/writing/tags/#{{ tag | uri_escape }}">{{ tag | escape }}</a></li>{% endfor %}</ul>
+  </div>
+  <a class="entry-arrow" href="{{ entry.url }}" aria-label="Read {{ entry.title | escape }}"><i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+</article>

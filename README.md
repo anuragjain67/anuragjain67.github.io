@@ -36,6 +36,22 @@ Repository-local guidance is available for
 Tests, agent skills, and the design QA report are excluded from the public site.
 Local font licenses are retained under `assets/fonts/portfolio/`.
 
+# Writing and analytics
+
+The notebook shares the homepage layout and offers search, topics, and poetry
+filters. Articles retain their original URLs and Disqus discussion IDs. Comments
+load on demand. The AJ favicon uses the site's ivory and forest-green palette.
+
+See [writing and analytics setup](docs/writing-and-analytics.md) for GA4 activation
+and the export-based blog/Medium importer. GA4 is configured with the supplied
+measurement ID `G-SBCP6GHRZR`; confirm live collection in its Realtime report.
+External content migration requires a full export while the source hosts block
+cloud access. No sample articles have been added to the public archive.
+
+```sh
+python3 -m unittest discover -s tests -p 'test_*.py'
+```
+
 # Technologies
 1. Built with [Jekyll](http://jekyllrb.com/). This website is completely static
    and I use basic HTML or Markdown for everything.
