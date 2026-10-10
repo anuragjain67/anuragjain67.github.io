@@ -158,7 +158,7 @@
     var reset = document.getElementById('demo-reset'), status = document.getElementById('demo-status');
     var explanation = document.getElementById('demo-explanation');
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    var name = 'congestion', tick = 0, elapsed = 0, running = false, lastTime = null, frame = null;
+    var name = 'coordinated', tick = 0, elapsed = 0, running = false, lastTime = null, frame = null;
     var cell = 60;
     canvas.hidden = false;
     container.querySelector('.demo-fallback').hidden = true;

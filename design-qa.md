@@ -200,3 +200,13 @@ errors occurred. The first URL check incorrectly compared CSS-uppercase
 innerText to mixed case; checking the actual text content confirmed all three
 poem labels and pages remained intact. Production build passed.
 No actionable P0/P1/P2 issues remain.
+
+## Coordinated scenario first
+
+The scenario controls now show Coordinated, Congestion, then Deadlock.
+Coordinated is selected initially and the canvas starts with its matching
+schedule and explanation, paused at step zero. Browser checks passed for order,
+initial state, step/reset, switching all scenarios, and mobile overflow.
+The build and all six schedule checks passed. Evidence:
+`/tmp/mapf-coordinated-first-desktop.png` (initial default, transitions settled)
+and `/tmp/mapf-coordinated-first-mobile.png`. No P0/P1/P2 findings remain.
