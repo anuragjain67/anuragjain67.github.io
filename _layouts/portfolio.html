@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% include head.html %}
+  <link rel="preload" href="/assets/fonts/portfolio/lora-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/css/portfolio.css">
+  <script defer src="/assets/js/mapf-demo.js"></script>
+</head>
+<body class="portfolio-page">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="portfolio-nav wrap">
+    <a class="wordmark" href="/" aria-label="Anurag Jain, home">Anurag Jain</a>
+    <nav aria-label="Main navigation">
+      <a href="#work">Work</a>
+      <a href="{{ site.nav.main.blog }}">Notes</a>
+      <a href="#about">About</a>
+      <a href="#connect">Connect</a>
+    </nav>
+  </header>
+  <main id="main" class="wrap">{{ content }}</main>
+  <footer class="portfolio-footer wrap">
+    <span>&copy; {{ site.time | date: "%Y" }} Anurag Jain</span>
+    <a href="/writing/">Writing archive <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+  </footer>
+</body>
+</html>

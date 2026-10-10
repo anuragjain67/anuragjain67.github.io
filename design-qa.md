@@ -1,0 +1,101 @@
+# Portfolio design QA
+
+final result: passed
+
+## Evidence
+
+- Source visual truth: `/workspace/generated_images/exec-f6ee001b-ca2a-4dbd-b127-b3ed7b283a0a.png` (selected option 2).
+- Browser-rendered desktop implementation: `/tmp/portfolio-desktop-final.png`.
+- Browser-rendered mobile implementation: `/tmp/portfolio-mobile-final.png`.
+- Combined full-view comparison: `/tmp/portfolio-comparison-final.png`.
+- Focused hero comparison: `/tmp/portfolio-hero-comparison.png`.
+- Focused demo comparison: `/tmp/portfolio-demo-comparison.png`.
+- Focused implementation captures: `/tmp/portfolio-hero-final.png`, `/tmp/portfolio-demo-final.png`.
+- Functional browser check results: `/tmp/portfolio-checks.json`.
+
+Desktop viewport: 1440 × 1000 CSS pixels, deviceScaleFactor 1. Full page is
+1440 × 2983 pixels. Source is 946 × 1663 pixels; both images were normalized to
+720 pixels wide with proportional heights for the combined comparison. Focused
+regions were normalized to equal widths without stretching. Mobile viewport:
+390 × 844 CSS pixels, deviceScaleFactor 1. State: homepage, congestion selected,
+paused at step 0. CSS transitions were allowed to settle before final capture.
+
+## Comparison history
+
+Initial combined evidence: `/tmp/portfolio-comparison-v1.png`.
+
+1. P2: Raster illustrations had tinted rectangular paper backgrounds that
+   differed from the continuous page surface. Fixed by generating transparent
+   versions preserving the graphite drawing, routes, labels, and colored shading.
+   The final captures show the illustrations integrated with the ivory page.
+2. P2: Desktop display typography and supporting text were smaller than the
+   selected editorial hierarchy. Increased the hero and section headings,
+   supporting text, and left story column. Mobile heading sizes remain responsive.
+   The focused hero and full-page recaptures show the corrected hierarchy.
+
+No actionable P0/P1/P2 findings remain after the revised combined comparison.
+
+## Required fidelity surfaces
+
+- Fonts and typography: self-hosted Lora serif headings/body and DM Sans for
+  navigation/controls match the editorial serif/sans pairing. Three-line hero and
+  two-line section headings remain readable. Local font licenses are preserved.
+- Spacing and layout rhythm: two columns, numbered sections, rule separators,
+  generous section padding, and warm open page surface follow the reference.
+  Mobile stacks the content with no clipped controls or horizontal scrolling.
+- Colors and tokens: ivory `#f8f5ed`, forest green `#184c39`, graphite `#171d18`,
+  muted rules, and amber accents retain the chosen direction. Selected controls
+  have a clear green state; visible keyboard focus uses amber.
+- Image quality: generated raster illustrations preserve the reference's
+  hand-drawn subject matter and pencil detail. Their transparent WebP versions
+  blend into the page without paper panels. No static reference illustrations
+  were replaced by code-drawn art. The canvas is a live data visualization of
+  actual illustrative schedules, rather than an illustration substitute.
+- Copy/content: MAPF leadership appears before title and experience. Congestion,
+  deadlock resolution, and navigation efficiency are described as software work.
+  Decomposition has its own prominent section. Client names, team sizes,
+  performance percentages, and customer-facing SaaS descriptions are absent.
+
+## Intentional implementation differences
+
+The reference shows a static mid-scenario simulation image. The implementation
+starts at step 0 and runs real, checked illustrative schedules. It includes agent
+letters and a legend, a step button, scenario explanations, and playback status
+for accessibility. These additions increase the MAPF section's height. There is
+no claim that the example is GreyOrange's production planner or optimal MAPF.
+
+The About section retains the user's approved career details and education, so
+it is longer than the design concept. The architecture diagram is explicitly
+conceptual with generic service labels. Existing writing routes and the external
+blog remain available through navigation and the footer.
+
+## Validation
+
+- Jekyll build passed.
+- Six Node schedule tests passed: no shelf/boundary violations, invalid steps,
+  shared-cell collisions or opposing swaps; congestion includes waiting and
+  eventual arrival; deadlock stays unresolved; coordination reaches every goal.
+- Chromium browser: scenario toggles, selected states, matching agent legend,
+  play/pause, completion/replay, step, reset while playing, and keyboard playback.
+- Reduced-motion preference switches playback to manual advancement.
+- No-JavaScript page retains illustration, explanatory content, and navigation.
+- No horizontal overflow at widths 320, 390, 768, 1024, and 1440.
+- No homepage JavaScript errors or failed asset requests.
+- Writing archive, tags, popular posts, original CSS and RSS returned HTTP 200;
+  RSS contains 10 entries.
+- Internal skills, tests, and this report returned HTTP 404 on the public server
+  after restarting it to apply the Jekyll exclusion configuration.
+
+## Implementation checklist
+
+- [x] Fix the initial P2 findings and recapture.
+- [x] Compare full page and focused regions alongside the visual target.
+- [x] Verify functional interactions, mobile layout, and accessible alternatives.
+- [x] Preserve existing routes and public-content boundaries.
+
+## Follow-up polish
+
+P3: Generated pencil marks and service-label placement differ slightly from the
+concept image; subject, legibility, and art direction are preserved. Validation
+used Chromium; other browser engines were not exercised. No automated check
+replaces a full assistive-technology audit.

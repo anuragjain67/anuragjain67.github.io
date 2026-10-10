@@ -13,6 +13,29 @@ Blog, Learnings, Poem etc.
 # Through Docker 
 docker-compose up -d
 
+# Visual homepage
+
+The homepage uses the `portfolio` layout, local fonts, and field-notes illustrations.
+Its MAPF demonstration shows three illustrative scenarios: congestion, deadlock,
+and coordinated paths. The decomposition diagram uses generic service boundaries;
+neither visual represents a production system or measured company results.
+
+Run the schedule checks with Node.js (18 or later):
+
+```sh
+node --test tests/mapf-demo.test.cjs
+```
+
+Build and serve with the Jekyll commands above. For UI changes, also check the
+scenario controls, play/pause/reset, keyboard navigation, reduced motion, and
+mobile layout in a browser. The existing writing archive and RSS should still work.
+
+Repository-local guidance is available for
+[Codex](.agents/skills/visual-portfolio/SKILL.md) and
+[Claude Code](.claude/skills/visual-portfolio/SKILL.md).
+Tests, agent skills, and the design QA report are excluded from the public site.
+Local font licenses are retained under `assets/fonts/portfolio/`.
+
 # Technologies
 1. Built with [Jekyll](http://jekyllrb.com/). This website is completely static
    and I use basic HTML or Markdown for everything.

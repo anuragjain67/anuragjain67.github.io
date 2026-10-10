@@ -48,5 +48,8 @@ sass:
   sass_dir: "/assets/css"
   style: :compressed
 highlighter: rouge
+exclude:
+- design-qa.md
+- tests
 gems:
 - jekyll-paginate
