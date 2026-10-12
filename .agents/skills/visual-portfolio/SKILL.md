@@ -75,6 +75,10 @@ for animation. Keep essential explanations available without JavaScript.
 
 ## Writing and analytics
 
+The homepage's "From my engineering notebook" section links to the personal
+blog (`site.nav.main.personal_blog`), Medium (`site.nav.main.medium`), and the
+writing archive (`site.nav.main.blog`). Keep these configured source links.
+
 Keep the notebook and article layouts consistent with the selected homepage
 direction. Preserve existing article routes, dates, source attribution, RSS,
 and Disqus identifiers. Every article must remain readable without JavaScript;

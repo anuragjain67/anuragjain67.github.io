@@ -15,6 +15,7 @@ google_analytics: "G-SBCP6GHRZR"
 nav:
   main:
     blog: "/writing/"
+    personal_blog: "https://blog.anuragjain.me/"
     medium: "https://jainanurag.medium.com"
   writing:
     all: "/writing"
