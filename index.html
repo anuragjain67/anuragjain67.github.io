@@ -78,8 +78,8 @@ nav_item: home
     <p class="section-label"><span class="section-number">02</span><span class="label-rule" aria-hidden="true"></span> System architecture</p>
     <h2 id="architecture-title">Decomposing<br>a monolith.</h2>
     <p><strong>I led the decomposition of a large Erlang monolith into independently deployable microservices.</strong></p>
-    <p>The central question: where should one service end and another begin? Clear boundaries let components evolve independently, while keeping their interactions explicit.</p>
-    <p class="small-note">A different system, a familiar challenge: coordinating parts without coupling everything together.</p>
+    <p>The challenge was carrying out the decomposition while the system was still running. That meant coordinating architectural changes alongside ongoing operations and development.</p>
+    <p class="small-note">Changing the architecture while keeping day-to-day work moving.</p>
   </div>
   <figure class="architecture-figure">
     <img src="/assets/img/portfolio/decomposition-notes.webp" width="1200" height="786" loading="lazy" alt="Conceptual diagram: an Erlang monolith is decomposed into three independently deployable services, labeled Service A, Service B, and Service C.">
