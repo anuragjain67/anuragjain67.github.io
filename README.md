@@ -28,10 +28,15 @@ Reduced motion keeps the walkthrough manual with Advance or Step.
 The decomposition diagram uses generic service boundaries;
 neither visual represents a production system or measured company results.
 
-Run the schedule checks with Node.js (18 or later):
+Experience is computed from `career_start: "2013-06"` in `_config.yml`.
+It counts completed years and advances each June in the site's timezone.
+Jekyll renders a fallback; the browser refreshes the count when visiting,
+so it also stays current between site builds.
+
+Run the experience and schedule checks with Node.js (18 or later):
 
 ```sh
-node --test tests/mapf-demo.test.cjs
+node --test tests/*.test.cjs
 ```
 
 Build and serve with the Jekyll commands above. For UI changes, also check the

@@ -15,7 +15,9 @@ Inspect the current diff and preserve user changes. Read `index.html`,
   that clearly describes Anurag's current work. Avoid product marketing copy.
   Explain that he is currently leading Multi-Agent Pathfinding (MAPF) for
   warehouse robotics automation at GreyOrange, then Senior Engineering Manager
-  and 13+ years of experience. Preserve this work/title/experience order.
+  and experience computed from the June 2013 career start in `site.career_start`.
+  Count completed years, advancing each June; do not hardcode the number.
+  Preserve this work/title/experience order.
 - Explain the software work: coordinating fleet paths, reducing congestion,
   resolving deadlocks faster, and improving overall navigation efficiency.
   Avoid implying hardware navigation, sensors, localization, or motion control.

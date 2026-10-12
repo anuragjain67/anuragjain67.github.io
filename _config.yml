@@ -22,6 +22,8 @@ nav:
     tags: "/writing/tags"
     rss: "/feed.xml"
 name: Anurag Jain
+# Calendar month when Anurag began his career; experience advances each June.
+career_start: "2013-06"
 slogan: Software Engineer by ❤️.
 description: Learn & Share
 thumbnail_path: anurag-jain.png
