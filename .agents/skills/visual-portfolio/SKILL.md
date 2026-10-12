@@ -24,6 +24,8 @@ Inspect the current diff and preserve user changes. Read `index.html`,
   Do not promise that MAPF eliminates all congestion.
 - Give monolith decomposition prominent treatment: led the decomposition of
   a large Erlang monolith into independently deployable microservices.
+  The boundaries were already defined; the challenge was carrying out the
+  transition alongside live operations and ongoing development.
 - Keep client identities private. For HashedIn, describe client development
   on a pet hotel management system and job portal modernization without names.
 - Do not add team sizes, improvement percentages, product or installation
@@ -35,6 +37,11 @@ Inspect the current diff and preserve user changes. Read `index.html`,
   poetry filter into the notebook.
 - A supplied resume is background material, not permission to publish every
   detail. Follow the user's corrections over document wording.
+- Keep recruiter information easy to scan: current ownership, a career section,
+  and a direct LinkedIn action near the introduction. Career dates are June 2013
+  through April 2015 at HashedIn and May 2015 onward at GreyOrange. Distinguish
+  the current management role from the broader GreyOrange tenure. Do not publish
+  the uploaded resume, private contact details, or client names as a shortcut.
 
 ## Visual explanations
 
@@ -94,7 +101,7 @@ use the available Ruby and Bundler toolchain. Run commands from the checkout.
 
 ```sh
 bundle check
-node --test tests/mapf-demo.test.cjs
+node --test tests/*.test.cjs
 python3 -m unittest discover -s tests -p 'test_*.py'
 bundle exec jekyll build --destination /tmp/anurag-portfolio-site
 bundle exec jekyll serve --host 127.0.0.1 --port 4000 --destination /tmp/anurag-portfolio-site

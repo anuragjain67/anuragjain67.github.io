@@ -37,6 +37,8 @@
 .portfolio-page .hero-role{font-family:'DM Sans',sans-serif;font-size:18px;margin-bottom:32px}
 .primary-link{display:inline-flex;align-items:center;gap:20px;border:1px solid var(--green);background:var(--green);color:white!important;padding:15px 22px;border-radius:3px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;min-height:48px;transition:background .15s}
 .primary-link:hover{background:#0d3527}
+.hero-actions{display:flex;align-items:center;gap:14px 24px;flex-wrap:wrap}
+.secondary-link{display:inline-flex;align-items:center;gap:12px;min-height:48px;font:600 14px/1.5 'DM Sans',sans-serif;text-decoration:underline!important;text-underline-offset:5px;text-decoration-color:var(--line)!important}
 .portfolio-page figure{margin:0}
 .portfolio-page img{display:block;max-width:100%;height:auto}
 .hero-figure img{width:100%;mix-blend-mode:multiply}
@@ -45,6 +47,7 @@
 .portfolio-page .section-label{gap:20px;font-size:12px;margin-bottom:22px;min-height:43px}
 .portfolio-page .story h2{margin-bottom:29px}
 .story-copy p:not(.section-label){max-width:570px}
+.portfolio-page .work-role{font:600 14px/1.6 'DM Sans',sans-serif;color:var(--green);margin:0 0 16px}
 .portfolio-page .text-link{font-family:'DM Sans',sans-serif;display:inline-flex;align-items:center;gap:14px;font-size:13px;font-weight:500;margin-top:5px;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:5px}
 .portfolio-page .small-note{font-size:14px;color:var(--muted);line-height:1.7}
 .demo-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:8px 0 20px;flex-wrap:wrap;font-family:'DM Sans',sans-serif}
@@ -86,6 +89,21 @@
 .landscape{width:100%;margin-top:36px;mix-blend-mode:multiply}
 .about-copy{padding-top:8px}
 .about-copy p{font-size:18px}
+.career-history{list-style:none;padding:0;margin:12px 0 0;font:16px/1.7 'DM Sans',sans-serif}
+.career-history>li{padding:0 0 28px;margin-bottom:28px;border-bottom:1px solid var(--line)}
+.career-history>li:last-child{padding-bottom:0;margin-bottom:0;border:0}
+.career-heading{display:flex;align-items:baseline;justify-content:space-between;gap:6px 20px;flex-wrap:wrap;margin-bottom:10px}
+.career-heading h3{font:700 25px/1.3 Lora,Georgia,serif;letter-spacing:-.025em;margin:0}
+.portfolio-page .career-heading p{font:13px/1.7 'DM Sans',sans-serif;color:var(--muted);margin:0}
+.portfolio-page .career-role{font-size:14px;font-weight:600;color:var(--green);margin-bottom:8px}
+.portfolio-page .career-progression{font-size:12px;color:var(--muted);margin-bottom:15px}
+.career-history ul{padding-left:21px;margin:0}
+.career-history ul li{margin:0 0 9px;padding-left:3px}
+.career-history>li>p:last-child{margin-bottom:0}
+.selected-notes{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.selected-notes h3{font:600 15px/1.5 'DM Sans',sans-serif;margin:0 0 8px}
+.portfolio-page .selected-notes p{font:13px/1.7 'DM Sans',sans-serif;color:var(--muted);margin-bottom:12px}
+.selected-notes a{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:44px;padding:10px 0;font:500 14px/1.6 'DM Sans',sans-serif;color:var(--green);text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:4px}
 .contact-links{display:flex;flex-wrap:wrap;justify-content:space-between;gap:20px;border-top:1px solid var(--line);margin-top:32px;padding-top:28px;font:500 14px/1.5 'DM Sans',sans-serif}
 .contact-links a{display:inline-flex;align-items:center;gap:12px;min-height:44px}
 .contact-links a>.fa:first-child{font-size:24px}
@@ -95,3 +113,4 @@
 @media(max-width:1100px){.portfolio-page .wrap{width:calc(100% - 64px)}.portfolio-page .hero{gap:12px;padding-top:45px}.portfolio-page .story,.portfolio-page .about-story{gap:35px;grid-template-columns:.92fr 1.08fr}.portfolio-page .hero-intro{font-size:20px}.demo-controls{gap:10px}.demo-controls button{padding:9px 10px;font-size:11px}.portfolio-page .hero-role{font-size:14px}.portfolio-page h1{font-size:52px}.portfolio-page h2{font-size:36px}}
 @media(max-width:760px){.portfolio-page .wrap{width:calc(100% - 40px)}.portfolio-nav{flex-wrap:wrap;justify-content:center;gap:0;padding:16px 0 0}.portfolio-nav .wordmark{font-size:14px}.portfolio-nav nav{width:100%;justify-content:center;gap:30px;font-size:13px}.portfolio-nav nav a{padding:12px 0}.portfolio-page .hero{grid-template-columns:1fr;padding:42px 0 30px;gap:18px}.portfolio-page h1{font-size:clamp(40px,8.5vw,58px)}.hero-copy{padding:0}.portfolio-page .eyebrow{font-size:11px;margin-bottom:20px}.ink-rule{margin:22px 0}.portfolio-page .hero-intro{font-size:20px}.portfolio-page .hero-role{font-size:13px;margin-bottom:25px}.hero-figure{max-width:530px;justify-self:center}.portfolio-page .story,.portfolio-page .about-story{grid-template-columns:1fr;gap:24px;padding:35px 0 40px}.portfolio-page h2{font-size:36px}.portfolio-page .section-label{font-size:10px;gap:15px;margin-bottom:18px}.section-number{font-size:27px}.portfolio-page .story h2{margin-bottom:22px}.story-copy p:not(.section-label){max-width:none}.portfolio-page{font-size:16px}.demo-controls{margin-top:0;gap:12px}.demo-controls button{font-size:12px;min-height:44px;padding:10px}.demo-legend{gap:14px;font-size:11px}.portfolio-page figcaption{font-size:11px}.portfolio-page figcaption>span{display:none}.architecture-figure{padding-top:0}.about-heading .landscape{margin-top:20px;max-width:480px}.about-copy{padding-top:0}.contact-links{gap:15px;padding-top:22px}.contact-links a{gap:8px;font-size:13px}.portfolio-footer{font-size:11px}.text-link{max-width:100%;line-height:1.6}}
 @media(prefers-reduced-motion:reduce){.portfolio-page *{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:760px){.portfolio-nav nav{flex-wrap:wrap;gap:0 24px}.career-heading h3{font-size:23px}.career-history{margin-top:0}.hero-actions{gap:8px 24px}}

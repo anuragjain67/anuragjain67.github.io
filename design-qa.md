@@ -280,3 +280,29 @@ reduced motion, no-JavaScript content, and no horizontal overflow at
 The full deadlock/recovery browser regression passed; writing and RSS respond
 successfully. Functional results: `/tmp/congestion-checks.json`.
 No actionable P0/P1/P2 findings remain.
+
+## Recruiter journey review — 12 October 2026
+
+final result: passed
+
+Reviewed a fresh local Jekyll build from introduction through work, career,
+leadership/contact, and writing. Added an opening LinkedIn action, a navigable
+career overview, explicit MAPF ownership, concrete leadership responsibilities,
+and technical reading entry points. Kept the approved introduction, dynamic
+experience, live-operations decomposition explanation, private-content limits,
+and field-notes visual direction. Step now has a visible label; the homepage
+skip link focuses its main content.
+
+Before/after evidence and recruiter findings are in
+`docs/recruiter-review.md`, with screenshots under `/tmp/recruiter-audit/`.
+Inspected all accepted screenshots, including desktop/mobile career and contact
+states. Shortened the initial four-line career heading to "Experience at a
+glance" after inspecting its mobile capture.
+
+Production build and 19 Node tests passed. Chromium checks passed for section
+navigation, role/date content, profile URL actions, keyboard focus, scenario
+controls, existing archive filters, article links, and no-JavaScript content.
+No overflow at 320/390/768/1024/1440 px or failed assets/JavaScript errors.
+Jekyll's server verified extensionless article routes after the initial static
+test server did not support them. Final results:
+`/tmp/recruiter-audit/checks.json`. No actionable P0/P1/P2 findings remain.
