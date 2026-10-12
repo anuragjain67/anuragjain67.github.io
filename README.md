@@ -17,7 +17,11 @@ docker-compose up -d
 
 The homepage uses the `portfolio` layout, local fonts, and field-notes illustrations.
 Its MAPF demonstration opens with coordinated paths, with congestion and deadlock
-examples also available. The deadlock walkthrough shows two robots waiting for
+examples also available. The congestion example merges two incoming lanes into
+one shared aisle. Robots wait only when another robot occupies their requested
+cell; counts and amber outlines show the upstream queue while the fleet keeps
+moving. All four reach their goals without an artificial speed gate.
+The deadlock walkthrough shows two robots waiting for
 each other's occupied cell in a single-lane aisle. Use **Resolve deadlock** to
 watch A back into a passing bay, let B pass, and continue to its original goal.
 Reduced motion keeps the walkthrough manual with Advance or Step.

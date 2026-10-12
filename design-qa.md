@@ -247,3 +247,36 @@ reduced motion. No horizontal overflow at 320/390/768/1024/1440 px or homepage
 JavaScript errors. Without JavaScript, the original illustration and a textual
 circular-wait/yielding explanation remain available. Writing and RSS respond
 successfully. No actionable P0/P1/P2 findings remain.
+
+## Congestion caused by a merge — 12 October 2026
+
+final result: passed
+
+Replaced the periodic slow-cell rule with a constrained layout where two
+incoming lanes merge into one shared aisle. The scheduler delays a request only
+when another robot occupies the requested cell in the next step. Two robots
+queue upstream while the others move; the merge admits one robot each step
+without a circular wait, and all four eventually arrive.
+
+The guide names the waiting/moving robots, and shows next-step moving and
+waiting counts plus arrived robots. Amber outlines identify waiting cells;
+the merge and shared aisle are labeled. The text distinguishes a draining
+queue from a cleared merge and completed goals. Counts are from the illustrative
+schedule and are not company measurements. Coordinated remains selected first.
+
+Inspected evidence: `/tmp/congestion-before.png`,
+`/tmp/congestion-queue-desktop.png`, `/tmp/congestion-queue-mobile.png`, and
+`/tmp/congestion-arrived-desktop.png`. The dynamic diagram preserves the site's
+ivory/green palette, typography, controls, and textual alternatives.
+
+Jekyll build and all 15 schedule tests passed. New checks establish that waiting
+is caused by a competing cell request, the queue stays upstream, movement
+continues every step, the merge admits one robot at a time, boundaries and
+collisions remain valid, and arrived agents do not count as waiting. Chromium
+checks passed for queue formation/draining/completion, live counts and accessible
+descriptions, keyboard stepping, play/pause/replay/reset, all scenario switches,
+reduced motion, no-JavaScript content, and no horizontal overflow at
+320/390/768/1024/1440 px. No JavaScript errors or failed homepage assets.
+The full deadlock/recovery browser regression passed; writing and RSS respond
+successfully. Functional results: `/tmp/congestion-checks.json`.
+No actionable P0/P1/P2 findings remain.

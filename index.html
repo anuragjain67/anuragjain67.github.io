@@ -41,6 +41,16 @@ nav_item: home
         <button type="button" id="demo-reset"><i class="fa fa-repeat" aria-hidden="true"></i> Reset</button>
       </div>
     </div>
+    <div id="congestion-guide" class="congestion-guide" hidden>
+      <p class="traffic-title">Two incoming lanes. One shared aisle.</p>
+      <p id="congestion-story"></p>
+      <dl class="traffic-counts" aria-label="Next scheduled step">
+        <div><dt>Moving next step</dt><dd data-traffic-count="moving">0</dd></div>
+        <div><dt>Waiting next step</dt><dd data-traffic-count="waiting">0</dd></div>
+        <div><dt>Arrived</dt><dd data-traffic-count="arrived">0</dd></div>
+      </dl>
+      <p class="small-note">Amber outlines mark robots waiting for space. Use Step to follow the queue as it forms and clears.</p>
+    </div>
     <div id="deadlock-guide" class="deadlock-guide" hidden>
       <ol class="deadlock-stages" aria-label="Deadlock walkthrough">
         <li data-deadlock-stage="approach">Meet in the aisle</li>
@@ -59,7 +69,7 @@ nav_item: home
     <div class="demo-legend" aria-label="Agent colors" hidden><span><b class="agent-key agent-a">A</b> Agent A</span><span><b class="agent-key agent-b">B</b> Agent B</span><span><b class="agent-key agent-c">C</b> Agent C</span><span><b class="agent-key agent-d">D</b> Agent D</span></div>
     <p id="demo-explanation" class="demo-explanation">When several paths share an aisle, robots need to coordinate access. Waiting and rerouting can help avoid conflicts and keep the fleet moving.</p>
     <p id="demo-status" class="demo-status" role="status" aria-live="polite" aria-atomic="true">Select a scenario and play to explore.</p>
-    <noscript><p class="demo-explanation">Enable JavaScript to play the examples. In the deadlock example, A waits for B’s occupied cell while B waits for A’s. A coordinator asks A to back up into a passing bay, lets B pass, then sends A onward. Coordinated yielding and rerouting can break the circular wait.</p></noscript>
+    <noscript><p class="demo-explanation">Enable JavaScript to play the examples. Congestion: two incoming lanes feed one shared aisle, so some robots queue while others move ahead. All eventually arrive. Deadlock: A waits for B’s occupied cell while B waits for A’s. A coordinator asks A to back up into a passing bay, lets B pass, then sends A onward. Coordinated yielding and rerouting can break the circular wait.</p></noscript>
   </div>
 </section>
 

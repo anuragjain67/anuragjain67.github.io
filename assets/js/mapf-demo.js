@@ -12,6 +12,11 @@
   function key(p) { return p[0] + ',' + p[1]; }
   function walkable(p, layout) {
     if (layout === 'deadlock') return (p[1] === 4 && p[0] >= 2 && p[0] <= 10) || same(p, [4, 3]);
+    if (layout === 'congestion') return ((p[1] === 2 || p[1] === 6) && p[0] >= 1 && p[0] <= 4)
+      || (p[0] === 4 && p[1] >= 2 && p[1] <= 6)
+      || (p[1] === 4 && p[0] >= 4 && p[0] <= 9)
+      || (p[0] === 9 && p[1] >= 2 && p[1] <= 6)
+      || ([2, 3, 5, 6].includes(p[1]) && p[0] >= 9 && p[0] <= 11);
     if (p[0] < 0 || p[0] >= COLS || p[1] < 0 || p[1] >= ROWS) return false;
     return !([1, 2, 6, 7].includes(p[1]) && [1, 2, 4, 5, 7, 8, 10, 11].includes(p[0]));
   }
@@ -22,7 +27,8 @@
     return result;
   }
 
-  // Local requests share a slow bottleneck. Reject conflicts rather than allowing collisions.
+  // At a merge, admit one request per cell. Waiting comes only from conflicts.
+  // Fixed agent priority is illustrative, not a throughput or fairness guarantee.
   function queueSchedules(paths) {
     var indices = paths.map(function () { return 0; });
     var schedules = paths.map(function (path) { return [path[0]]; });
@@ -30,8 +36,7 @@
       var current = paths.map(function (path, i) { return path[indices[i]]; });
       var moving = paths.map(function (path, i) {
         if (indices[i] === path.length - 1) return false;
-        var next = path[indices[i] + 1];
-        return !(same(next, [6, 4]) && t % 3 !== 0);
+        return true;
       });
       // Iteration is needed when one rejection forces a following agent to wait too.
       var changed = true;
@@ -101,16 +106,19 @@
   }
 
   function buildScenarios() {
-    var congestionPaths = [row(0, 12, 4),
-      row(0, 3, 3).concat(row(3, 9, 4), row(9, 12, 3)),
-      row(0, 3, 5).concat(row(3, 9, 4), row(9, 12, 5)),
-      [[3, 0], [3, 1], [3, 2], [3, 3]].concat(row(3, 9, 4), [[9, 3], [9, 2], [9, 1]], row(9, 12, 0))];
+    var congestionPaths = [
+      row(2, 4, 2).concat([[4, 3]], row(4, 9, 4), [[9, 3]], row(9, 11, 2)),
+      row(1, 4, 2).concat([[4, 3]], row(4, 9, 4), row(9, 11, 3)),
+      row(2, 4, 6).concat([[4, 5]], row(4, 9, 4), [[9, 5]], row(9, 11, 6)),
+      row(1, 4, 6).concat([[4, 5]], row(4, 9, 4), row(9, 11, 5))
+    ];
     var deadlockPaths = [row(4, 6, 4), row(9, 7, 4)];
     var scenarios = {
       congestion: {
         schedules: queueSchedules(congestionPaths), goals: congestionPaths.map(function (path) { return path[path.length - 1]; }),
-        explanation: 'A busy shared aisle creates a queue. In this example, agents make local progress, but access to the bottleneck is slow. Congestion delays movement; it does not necessarily stop it.',
-        end: 'All agents arrived, after queuing through the shared aisle.'
+        layout: 'congestion', routes: congestionPaths,
+        explanation: 'Two incoming lanes merge into one shared aisle. Only one robot can enter the merge cell per step. When both lanes arrive together, some robots wait and a queue forms upstream. The robots ahead keep moving, and the queue eventually clears.',
+        end: 'The queue cleared and all four robots reached their goals. The delay came from competing for the same merge cell.'
       },
       deadlock: {
         schedules: deadlockPaths, goals: [[10, 4], [2, 4]], layout: 'deadlock',
@@ -138,6 +146,17 @@
       validate(scenario.schedules, scenario.layout);
     });
     return scenarios;
+  }
+
+  // Describe the next scheduled move; an arrived robot is not a queued robot.
+  function trafficState(scenario, tick) {
+    var state = { waiting: [], moving: [], arrived: [] };
+    scenario.schedules.forEach(function (path, i) {
+      var current = at(path, tick), next = at(path, tick + 1);
+      var category = same(current, scenario.goals[i]) ? 'arrived' : same(current, next) ? 'waiting' : 'moving';
+      state[category].push(String.fromCharCode(65 + i));
+    });
+    return state;
   }
 
   function validate(paths, layout) {
@@ -168,6 +187,7 @@
     var explanation = document.getElementById('demo-explanation');
     var guide = document.getElementById('deadlock-guide');
     var resolve = document.getElementById('demo-resolve');
+    var congestionGuide = document.getElementById('congestion-guide');
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
     var name = 'coordinated', tick = 0, elapsed = 0, running = false, lastTime = null, frame = null;
     var recovering = false;
@@ -178,7 +198,7 @@
     container.querySelector('.demo-legend').hidden = false;
 
     function activeScenario() { return scenarios[recovering ? 'deadlockResolved' : name]; }
-    function interval() { return name === 'deadlock' ? 700 : 450; }
+    function interval() { return name === 'deadlock' ? 700 : name === 'congestion' ? 800 : 450; }
     function center(p) { return [(p[0] + .5 - (name === 'deadlock' ? 1 : 0)) * cell, (p[1] + .5 - (name === 'deadlock' ? 2 : 0)) * cell]; }
     function phase() {
       if (!recovering) return tick >= scenarios.deadlock.duration ? 'blocked' : 'approaching';
@@ -216,21 +236,52 @@
           : state === 'blocked' ? 'Try a coordinated recovery: A backs up into the bay so B can pass.'
             : state === 'resolved' ? 'Reset to see the standstill again.' : 'Pause or Step to inspect the recovery.';
     }
+    function updateCongestion() {
+      if (!congestionGuide) return;
+      congestionGuide.hidden = name !== 'congestion';
+      if (congestionGuide.hidden || congestionGuide.dataset.tick === String(tick)) return;
+      var scenario = activeScenario(), traffic = trafficState(scenario, tick);
+      var queueSeen = scenario.schedules.some(function (path) {
+        return path.slice(1, tick + 1).some(function (p, t) { return same(p, path[t]); });
+      });
+      var upstream = scenario.schedules.some(function (path) {
+        var p = at(path, tick);
+        return p[0] <= 4 && p[1] !== 4;
+      });
+      var state = traffic.arrived.length === scenario.schedules.length ? 'arrived'
+        : traffic.waiting.length ? 'queued' : !queueSeen ? 'approaching' : upstream ? 'draining' : 'flowing';
+      var message = state === 'queued'
+        ? traffic.waiting.join(' and ') + ' wait upstream while ' + traffic.moving.join(' and ') + ' keep moving. Two incoming lanes are competing for one merge cell.'
+        : state === 'arrived' ? 'All four robots arrived. The queue caused a delay, but the fleet kept making progress.'
+          : state === 'draining' ? 'The queue is draining. Robots take turns at the merge while those ahead continue down the shared aisle.'
+            : state === 'flowing' ? 'All robots have passed the merge. They continue toward their separate goals.'
+            : 'Robots approach from two lanes. They will need to take turns entering the shared aisle.';
+      congestionGuide.dataset.tick = String(tick);
+      congestionGuide.dataset.phase = state;
+      document.getElementById('congestion-story').textContent = message;
+      congestionGuide.querySelectorAll('[data-traffic-count]').forEach(function (item) {
+        item.textContent = String(traffic[item.dataset.trafficCount].length);
+      });
+      canvas.setAttribute('aria-label', 'Illustrative congestion example. ' + message
+        + ' Next step: ' + traffic.moving.length + ' moving, ' + traffic.waiting.length + ' waiting; ' + traffic.arrived.length + ' arrived.');
+    }
     function paint(position) {
       var scenario = activeScenario(), focused = name === 'deadlock';
+      var congestion = name === 'congestion', constrained = focused || congestion;
       var height = focused ? 355 : 540;
       if (canvas.height !== height) canvas.height = height;
       canvas.style.aspectRatio = '780 / ' + height;
       cell = focused ? 780 / 11 : 60;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#f8f5ed'; ctx.fillRect(0, 0, 780, height);
-      if (!focused) { ctx.fillStyle = 'rgba(194,132,41,.10)'; ctx.fillRect(6 * cell, 0, cell, height); }
+      if (!constrained) { ctx.fillStyle = 'rgba(194,132,41,.10)'; ctx.fillRect(6 * cell, 0, cell, height); }
+      if (congestion) { ctx.fillStyle = 'rgba(194,132,41,.12)'; ctx.fillRect(4 * cell, 4 * cell, 6 * cell, cell); }
       ctx.strokeStyle = 'rgba(84,91,76,.13)'; ctx.lineWidth = 1;
       for (var x = 0; x <= (focused ? 11 : COLS); x++) { ctx.beginPath(); ctx.moveTo(x * cell, 0); ctx.lineTo(x * cell, height); ctx.stroke(); }
       for (var y = 0; y <= (focused ? 5 : ROWS); y++) { ctx.beginPath(); ctx.moveTo(0, y * cell); ctx.lineTo(780, y * cell); ctx.stroke(); }
       for (var sx = focused ? 1 : 0; sx < (focused ? 12 : COLS); sx++) for (var sy = focused ? 2 : 0; sy < (focused ? 7 : ROWS); sy++) {
         if (walkable([sx, sy], scenario.layout)) continue;
-        if (focused) {
+        if (constrained) {
           var wall = center([sx, sy]);
           ctx.fillStyle = '#dfe1d6'; ctx.fillRect(wall[0] - cell / 2 + 2, wall[1] - cell / 2 + 2, cell - 4, cell - 4);
           continue;
@@ -251,6 +302,15 @@
         ctx.fillText('Passing bay', bay[0], 39);
         ctx.fillText('Single-lane aisle', 555, 39);
       }
+      if (congestion) {
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#184c39'; ctx.font = '600 21px "DM Sans", sans-serif';
+        ctx.fillText('Two lanes merge into one aisle', 390, 35);
+        ctx.fillStyle = '#855011'; ctx.font = '600 18px "DM Sans", sans-serif';
+        ctx.fillText('Merge', 270, 95);
+        ctx.beginPath(); ctx.moveTo(270, 113); ctx.lineTo(270, 223); ctx.strokeStyle = '#a05c13'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.stroke(); ctx.setLineDash([]);
+        ctx.strokeStyle = '#a05c13'; ctx.lineWidth = 3; ctx.strokeRect(4 * cell + 4, 4 * cell + 4, cell - 8, cell - 8);
+        ctx.fillText('Shared aisle', 435, 345);
+      }
       scenario.schedules.forEach(function (path, i) {
         var planned = focused && !recovering ? row(path[0][0], scenario.goals[i][0], 4) : path;
         ctx.beginPath(); ctx.strokeStyle = colors[i]; ctx.globalAlpha = .38; ctx.lineWidth = 2; ctx.setLineDash([6, 6]);
@@ -264,9 +324,12 @@
       scenario.schedules.forEach(function (path, i) {
         var from = at(path, Math.floor(position)), to = at(path, Math.min(Math.floor(position) + 1, scenario.duration));
         var part = position - Math.floor(position), point = center([from[0] + (to[0] - from[0]) * part, from[1] + (to[1] - from[1]) * part]);
-        ctx.beginPath(); ctx.arc(point[0], point[1], focused ? 20 : 14, 0, 2 * Math.PI); ctx.fillStyle = colors[i]; ctx.fill();
+        ctx.beginPath(); ctx.arc(point[0], point[1], constrained ? 20 : 14, 0, 2 * Math.PI); ctx.fillStyle = colors[i]; ctx.fill();
         ctx.strokeStyle = '#f8f5ed'; ctx.lineWidth = 3; ctx.stroke();
-        ctx.fillStyle = '#fff'; ctx.font = '700 ' + (focused ? 20 : 15) + 'px "DM Sans", sans-serif'; ctx.fillText(String.fromCharCode(65 + i), point[0], point[1]);
+        ctx.fillStyle = '#fff'; ctx.font = '700 ' + (constrained ? 20 : 15) + 'px "DM Sans", sans-serif'; ctx.fillText(String.fromCharCode(65 + i), point[0], point[1]);
+        if (congestion && !same(from, scenario.goals[i]) && same(from, to)) {
+          ctx.strokeStyle = '#a05c13'; ctx.lineWidth = 3; ctx.strokeRect(point[0] - cell / 2 + 4, point[1] - cell / 2 + 4, cell - 8, cell - 8);
+        }
       });
       if (focused && !recovering && position >= scenarios.deadlock.duration) {
         scenario.schedules.forEach(function (path, i) {
@@ -285,6 +348,8 @@
       canvas.dataset.scenario = name;
       canvas.dataset.phase = focused ? phase() : '';
       updateGuide();
+      updateCongestion();
+      if (congestion) canvas.dataset.phase = congestionGuide.dataset.phase;
     }
     function buttons() {
       play.querySelector('span').textContent = reduced.matches ? 'Advance' : running ? 'Pause' : tick >= activeScenario().duration ? 'Replay' : 'Play';
@@ -305,11 +370,13 @@
     function resetState() {
       stop(); recovering = false; tick = 0; elapsed = 0;
       if (guide) delete guide.dataset.phase;
+      if (congestionGuide) delete congestionGuide.dataset.tick;
       paint(0); buttons(); announce('Ready.');
     }
     function advance() {
       if (tick >= activeScenario().duration) return;
-      tick++; elapsed = tick * interval(); paint(tick); buttons(); announce('Advanced.');
+      tick++; elapsed = tick * interval(); paint(tick); buttons();
+      announce(name === 'congestion' ? document.getElementById('congestion-story').textContent : 'Advanced.');
     }
     function animate(timestamp) {
       if (!running) return;
@@ -317,10 +384,12 @@
       lastTime = timestamp;
       var progress = Math.min(elapsed / interval(), activeScenario().duration);
       var previousTick = tick;
+      var previousTrafficPhase = congestionGuide && congestionGuide.dataset.phase;
       tick = Math.floor(progress); paint(progress);
       if (progress >= activeScenario().duration) { stop(); announce('Finished.'); }
       else {
         if (name === 'deadlock' && tick !== previousTick && [3, 8].includes(tick)) announce(document.getElementById('deadlock-story').textContent);
+        if (name === 'congestion' && previousTrafficPhase !== congestionGuide.dataset.phase) announce(document.getElementById('congestion-story').textContent);
         frame = window.requestAnimationFrame(animate);
       }
     }
@@ -355,5 +424,5 @@
     explanation.textContent = scenarios[name].explanation;
     resetState();
   }
-  return { buildScenarios: buildScenarios, validate: validate, walkable: walkable, at: at, mount: mount };
+  return { buildScenarios: buildScenarios, validate: validate, walkable: walkable, trafficState: trafficState, at: at, mount: mount };
 }));
